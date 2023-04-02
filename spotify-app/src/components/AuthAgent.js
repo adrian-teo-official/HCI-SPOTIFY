@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";;
+import { useState,useEffect } from "react";;
 
 
 function AuthAgent( code ) {
@@ -8,41 +8,63 @@ function AuthAgent( code ) {
     const [expiresIn, setExpiresIn] = useState("");
 
 
-    useEffect (() => {
-        console.log("In");
-        // fetch('http://localhost:3001/login', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         code: code
-        //     })
-        // })
-        // .then(response => response.json())
-        // .then(data => console.log(data))
-        // .catch(error => console.error(error)) 
+    useEffect(() => {
 
-        fetch('http://localhost:3001/login', {
-            method: 'POST',
-            headers: {
+        async function fetchLoginData() {
+          try {
+            const response = await fetch('http://localhost:8888/login', {
+              method: 'POST',
+              headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ code: code })
-        })
-        .then(response => response.json())
-        .then(data => {
+              },
+              body: JSON.stringify({ code: code })
+            });
+            const data = await response.json();
             setAccessToken(data.accessToken);
             setRefreshToken(data.refreshToken);
             setExpiresIn(data.expiresIn);
-            console.log(data);
-            window.history.pushState({},null,"/");
-        })
-        .catch(error => {})
+            window.history.pushState({}, null, "/");
+          } catch (error) {
+            console.error(error);
+          }
+        }
 
+        fetchLoginData();
     }, [code]);
 
-    console.log(accessToken);
+    useEffect(() => {
+
+        if (!refreshToken || !expiresIn) {
+            return;
+        }
+
+        async function fetchRefreshToken() {
+            try {
+                const response = await fetch('http://localhost:8888/refresh', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ refreshToken: refreshToken })
+                });
+                const data = await response.json();
+                setAccessToken(data.accessToken);
+                setExpiresIn(data.expiresIn);
+                window.history.pushState({}, null, "/");
+
+            } catch (error) {
+
+                window.location = "/";
+            }
+        }
+
+        const interval = setInterval(() => {
+            fetchRefreshToken();
+        }, (expiresIn - 60) * 1000);
+
+        return () => clearInterval(interval); //clearInterval makes sure the interval is cleared when the component unmounts;
+
+    }, [refreshToken, expiresIn]);
 
     return accessToken;
 
