@@ -80,6 +80,7 @@ const Dashboard = ({ code }) => {
       <div className="Search">
         <form onSubmit={submitHandler}>
           <div className="form-row">
+
             <div className="form-group col-lg-4 mr-3">
               <input
                 className="form-control"
@@ -90,21 +91,34 @@ const Dashboard = ({ code }) => {
                 required
               />
             </div>
+
             <div className="form-group">
-              <button
-                className="btn btn-outline-primary"
-                style={{ transform: "translateY(10px)" }}
-                type="submit"
-              >
-                Search
-              </button>
+              <button className="btn btn-outline-primary" style={{ transform: "translateY(10px)" }} type="submit"> Search </button>
             </div>
+
           </div>
         </form>
       </div>
 
-      <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}></div>
-      <p> {searchResults[0].name} </p>
+      <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
+
+        {
+            searchResults.map((track) => {
+
+                return (
+                <div className="card" key={track.id}>
+                    <div className="card-body">
+                     <h5 className="card-title">{track.name}</h5>
+                     <p className="card-text">{track.artist}</p>
+                     <p className="card-text">{track.album}</p> 
+                    </div>
+                </div>
+                )})
+                
+        }
+
+      </div>
+        
     </div>
   );
 };
