@@ -46,7 +46,7 @@ const Dashboard = ({ accessToken }) => {
         .then(response => response.json())
         .then(data => {
           setMyTopArtists(
-            data.map((artists) => {
+            data.map((artists) => {  
               return {
                 id: artists.id,
                 name: artists.name,
@@ -70,9 +70,6 @@ const Dashboard = ({ accessToken }) => {
       .then(data =>{
         setMyRecentlyPlay(
           data.map((played) => {
-
-            console.log(played);
-
             const smallestAlbumImage = played.track.album.images.reduce(
               (smallest, image) => {
                 if (image.height < smallest.height) return image
@@ -118,6 +115,49 @@ const Dashboard = ({ accessToken }) => {
                     <h5 className="card-title">{`${tracks.name}`}</h5>
                     <p className="card-text">{`Artists: ${tracks.artist}`}</p>
                     <p className="card-text">{`Album: ${tracks.album}`}</p>
+                  </div>
+                </div>
+              </div>
+            )
+          }) : <h5 className="text text-info text-center">Loading....</h5>
+        }
+      </div>
+      <div className="row mb-3">
+        <div className="jumbotron jumbotron-fluid border border-success mx-auto">
+          <h2 className="display-8">Your Top Tracks</h2>
+        </div>
+      </div>
+      <div className="row mb-3">
+        {
+          (finishFetch)? myTopTracks.slice(0,4).map((tracks)=>{
+            return (
+              <div className="col-sm-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">{`${tracks.name}`}</h5>
+                    <p className="card-text">{`Artists: ${tracks.artist}`}</p>
+                    <p className="card-text">{`Album: ${tracks.album}`}</p>
+                  </div>
+                </div>
+              </div>
+            )
+          }) : <h5 className="text text-info text-center">Loading....</h5>
+        }
+      </div>
+      <div className="row mb-3">
+        <div className="jumbotron jumbotron-fluid border border-success mx-auto">
+          <h2 className="display-8">Your Top Artists</h2>
+        </div>
+      </div>
+      <div className="row mb-3">
+        {
+          (finishFetch)? myTopArtists.slice(0,4).map((artists)=>{
+            return (
+              <div className="col-sm-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">{`${artists.name}`}</h5>
+                    <p className="card-text">{`Genres: ${artists.genres}`}</p>
                   </div>
                 </div>
               </div>
