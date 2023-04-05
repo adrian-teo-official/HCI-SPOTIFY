@@ -45,7 +45,7 @@ function AuthAgent(code) {
         const data = await response.json();
         setAccessToken(data.accessToken);
         setExpiresIn(data.expiresIn);
-        window.history.pushState({}, null, "/");
+        window.history.pushState({}, null, "/Home");
       } catch (error) {
         window.location = "/";
       }

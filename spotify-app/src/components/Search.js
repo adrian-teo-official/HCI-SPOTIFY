@@ -52,32 +52,25 @@ const Search = ({accessToken}) => {
       }, [search, accessToken]);
     
       return (
-        <div className="Container d-flex flex-column py-2" style={{ height: "100vh" }}>
-          <div className="Search">
-            <form onSubmit={submitHandler}>
-              <div className="form-row">
-                <div className="form-group col-lg-4 mr-3">
-
-                  <input
-                    className="form-control"
-                    name="search"
-                    defaultValue={search}
-                    placeholder="Search Songs/Artists"
-                    minLength="2"
-                    required />
-                    
-                </div>
-    
-                <div className="form-group">
-                  <button className="btn btn-outline-primary" style={{ transform: "translateY(10px)" }} type="submit"> Search </button>
-                </div>
-    
-              </div>
-            </form>
+        <div className="Container">
+          <div className="Search row justify-content-center">
+            <div className="col-md-6">
+              <form onSubmit={submitHandler} className="form-inline">
+                  <div className="form-group">
+                    <input
+                      className="form-control border border-black"
+                      name="search"
+                      defaultValue={search}
+                      placeholder="Search Songs/Artists"
+                      minLength="2"
+                      required />
+                  </div>
+                  <button className="btn btn-outline-dark bg-black text-white mt-2" type="submit"> Search </button>
+              </form>
+            </div>
           </div>
     
           <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
-    
             {
                 searchResults.map((track) => {
     

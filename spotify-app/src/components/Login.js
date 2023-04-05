@@ -32,14 +32,13 @@ const clientParams = new URLSearchParams({
   });
   
 const AUTH_URL = `https://accounts.spotify.com/authorize?${clientParams.toString()}`;
-//const AUTH_URL = `https://accounts.spotify.com/authorize?response_type=code&client_id=${client_id}&scope=ugc-image-upload user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative user-follow-modify user-follow-read user-library-modify user-library-read user-read-email user-read-private&redirect_uri=${redirect_uri}`;
-
   
 function Login()
 {
     return (
-        <div className="container" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
-            <a className='btn btn-success btn-lg' href={AUTH_URL}>
+        <div className="container">
+            <h1 className='text-center'>Welcome to HCI-Spotify</h1>
+            <a className='btn btn-success btn-lg' style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}} href={AUTH_URL}>
                 Login with Spotify
             </a>
 
