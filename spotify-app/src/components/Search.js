@@ -108,9 +108,6 @@ const Search = ({accessToken}) => {
             
         </div>
       );
-
-
-
 }
 
 export default Search;
