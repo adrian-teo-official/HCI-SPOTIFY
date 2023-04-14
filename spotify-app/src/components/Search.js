@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import SearchResult from "./SearchResult";
 
-const Search = ({accessToken}) => {
+const Search = ({accessToken, ChooseTrack}) => {
 
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -46,7 +47,8 @@ const Search = ({accessToken}) => {
                   name: tracks.name,
                   artist: tracks.artists[0].name,
                   album: tracks.album.name,
-                  albumImage: smallestAlbumImage.url
+                  albumImage: smallestAlbumImage.url,
+                  uri: tracks.uri
                 };
               })
             );
@@ -90,20 +92,10 @@ const Search = ({accessToken}) => {
                 searchResults.map((track) => {
     
                     return (
-                    <div className="col-sm-3">
-                      <div className="card mb-2">
-                        <img src = {`${track.albumImage}`} className="card-img-top" alt="Card image cap" />
-                        <div className="card-body">
-                          <h5 className="card-title">{`${track.name}`}</h5>
-                          <p className="card-text">{`Artists: ${track.artist}`}</p>
-                          <p className="card-text">{`Album: ${track.album}`}</p>
-                        </div>
-                      </div>
-                    </div>
+                    <SearchResult Track = {track} key={track.uri} ChooseTrack = {ChooseTrack}></SearchResult>
                     )})
                     
             }
-    
           </div>
             
         </div>

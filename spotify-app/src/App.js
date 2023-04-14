@@ -1,15 +1,25 @@
+import { useState } from "react";
 import './App.css';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import AuthAgent from "./components/AuthAgent";
 import Search from './components/Search';
+import Player from './components/Player';
+
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
-  
+
+  const [playingTrack, setPlayingTrack] = useState();
+
+  const chooseTrack = (track) =>{
+    setPlayingTrack(track);
+    console.log(playingTrack);
+  }
+
   let accessToken = '';
   
   const Logout = (e)=>{
@@ -66,11 +76,16 @@ function App() {
             </div>
           </div>
         </nav>
+        <nav class="navbar fixed-bottom navbar-dark bg-dark">
+          
+            <Player accessToken={accessToken} trackUri={playingTrack?.uri}/>
+        </nav>
+
         <Routes>
 
           <Route
             path="/Search"
-            element={<Search accessToken={accessToken}></Search>}
+            element={<Search accessToken={accessToken} ChooseTrack = {chooseTrack}></Search>}
           />
 
           <Route
