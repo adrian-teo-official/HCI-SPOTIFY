@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard';
 import AuthAgent from "./components/AuthAgent";
 import Search from './components/Search';
 import Player from './components/Player';
+import {FiLogOut} from 'react-icons/fi';
 
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
@@ -44,9 +45,9 @@ function App() {
     (localStorage.getItem('code')) ? 
       <div className="App container">
       <Router>
-        <nav className="navbar navbar-expand-lg bg-dark text-white border border-5 border-success mb-2 rounded">
+        <nav className="navbar navbar-expand-lg bg-dark text-white border border-5 border-success mb-2">
           <div className="container-fluid">
-            <Link className="navbar-brand text-white fs-2 fw-bold fst-italic" to="/"> HCI-Spotify </Link>
+            <Link className="navbar-brand text-white fs-2 fw-bold fst-italic me-3" to="/"> HCI-Spotify </Link>
             <button
               className="navbar-toggler"
               type="button"
@@ -58,26 +59,27 @@ function App() {
             >
               <span className="navbar-toggler-icon bg-white"></span>
             </button>
-            <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav d-flex align-items-center">
                 <li className="nav-item active">
-                    <Link className="nav-link text-white fs-5 text-wrap" to="/Dashboard"> Dashboard </Link>
+                    <Link className="nav-link text-white fs-4 text-wrap" to="/Dashboard"> Dashboard </Link>
                 </li>
                 <li className="nav-item active">
-                  <Link className="nav-link text-white fs-5 text-wrap" to="/Search"> Search </Link>
+                  <Link className="nav-link text-white fs-4 text-wrap" to="/Search"> Search </Link>
                 </li>
                 <li className="nav-item active">
-                  <Link className="nav-link text-white fs-5 text-wrap" to="/About"> About </Link>
-                </li>
-                <li className="nav-item active">
-                  <button className="btn btn-outline-primary" onClick={Logout}> Logout </button>
+                  <Link className="nav-link text-white fs-4 text-wrap" to="/About"> About </Link>
                 </li>
               </ul>
+              <div className="nav-item active ms-auto d-flex align-items-center">
+                  <button className="btn" onClick={Logout} style={{ fontSize: "30px", color: "white", marginBottom: "7px", border: "none", outline: "none", boxShadow: "none" }}> 
+                  <FiLogOut />
+                  </button>
+              </div>
             </div>
           </div>
         </nav>
-        <nav class="navbar fixed-bottom navbar-dark bg-dark">
-          
+        <nav class="navbar fixed-bottom bg-dark border-top border-3 border-success">
             <Player accessToken={accessToken} trackUri={playingTrack?.uri}/>
         </nav>
 

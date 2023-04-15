@@ -35,12 +35,10 @@ const Search = ({accessToken, ChooseTrack}) => {
             setSearchResults(
               data.map((tracks) => {
 
-                const smallestAlbumImage = tracks.album.images.reduce(
-                  (smallest, image) => {
-                    if (image.height < smallest.height) return image
-                    return smallest
-                  }, tracks.album.images[0]
-                )
+                const smallestAlbumImage = tracks.album.images.reduce((smallest, image) => {
+                  return image.height === Math.min(tracks.album.images.map(image => image.height)) ? image : smallest;
+                }, tracks.album.images[0]);
+                 
 
                 return {
                   id: tracks.id,
@@ -87,7 +85,7 @@ const Search = ({accessToken, ChooseTrack}) => {
             </div>
           </div>
     
-          <div className="row mb-3" >
+          <div className="row" style={{ marginBottom: '6rem' }} >
             {
                 searchResults.map((track) => {
     
