@@ -9,55 +9,7 @@ const Dashboard = ({ accessToken }) => {
 
   useEffect(() => {
 
-    try {
-      fetch("http://localhost:8888/getMyTopTracks", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            accessToken: accessToken
-          }),
-        })
-        .then(response => response.json())
-        .then(data => {
-          setMyTopTracks(
-            data.map((tracks) => {
-              return {
-                id: tracks.id,
-                name: tracks.name,
-                artist: tracks.artists[0].name,
-                album: tracks.album.name,
-                uri: tracks.uri
-              };
-            })
-          );
-        })
-
-      fetch("http://localhost:8888/getMyTopArtists", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            accessToken: accessToken
-          }),
-        })
-        .then(response => response.json())
-        .then(data => {
-          setMyTopArtists(
-            data.map((artists) => {  
-              return {
-                id: artists.id,
-                name: artists.name,
-                genres: artists.genres,
-                uri: artists.uri
-              };
-            })
-          );
-        })
-
-      fetch("http://localhost:8888/getMyRecentlyPlay", {
+    fetch("http://localhost:8888/getMyTopTracks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,32 +19,76 @@ const Dashboard = ({ accessToken }) => {
         }),
       })
       .then(response => response.json())
-      .then(data =>{
-        setMyRecentlyPlay(
-          data.map((played) => {
-            const smallestAlbumImage = played.track.album.images.reduce(
-              (smallest, image) => {
-                if (image.height < smallest.height) return image
-                return smallest
-              }, played.track.album.images[0]
-            )
-
+      .then(data => {
+        setMyTopTracks(
+          data.map((tracks) => {
             return {
-              id: played.track.id,
-              name: played.track.name,
-              artist: played.track.artists[0].name,
-              album: played.track.album.name,
-              uri: played.track.uri,
-              albumImage: smallestAlbumImage.url
+              id: tracks.id,
+              name: tracks.name,
+              artist: tracks.artists[0].name,
+              album: tracks.album.name,
+              uri: tracks.uri
             };
           })
         );
-
-        setFinishFetch(true);
       })
-    } catch (error) {
-      console.error(error);
-    }
+
+    fetch("http://localhost:8888/getMyTopArtists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accessToken: accessToken
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        setMyTopArtists(
+          data.map((artists) => {  
+            return {
+              id: artists.id,
+              name: artists.name,
+              genres: artists.genres,
+              uri: artists.uri
+            };
+          })
+        );
+      })
+
+    fetch("http://localhost:8888/getMyRecentlyPlay", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        accessToken: accessToken
+      }),
+    })
+    .then(response => response.json())
+    .then(data =>{
+      setMyRecentlyPlay(
+        data.map((played) => {
+          const smallestAlbumImage = played.track.album.images.reduce(
+            (smallest, image) => {
+              if (image.height < smallest.height) return image
+              return smallest
+            }, played.track.album.images[0]
+          )
+
+          return {
+            id: played.track.id,
+            name: played.track.name,
+            artist: played.track.artists[0].name,
+            album: played.track.album.name,
+            uri: played.track.uri,
+            albumImage: smallestAlbumImage.url
+          };
+        })
+      );
+
+      setFinishFetch(true);
+    })
     
   },[accessToken]);
 
@@ -100,7 +96,7 @@ const Dashboard = ({ accessToken }) => {
 
     <div className="container">
       <div className="row mb-3">
-        <div className="jumbotron jumbotron-fluid border border-success mx-auto">
+        <div className="jumbotron jumbotron-fluid text-white mx-auto">
           <h2 className="display-8">Recently Play Tracks</h2>
         </div>
       </div>
@@ -123,7 +119,7 @@ const Dashboard = ({ accessToken }) => {
         }
       </div>
       <div className="row mb-3">
-        <div className="jumbotron jumbotron-fluid border border-success mx-auto">
+        <div className="jumbotron jumbotron-fluid text-white mx-auto">
           <h2 className="display-8">Your Top Tracks</h2>
         </div>
       </div>
@@ -145,7 +141,7 @@ const Dashboard = ({ accessToken }) => {
         }
       </div>
       <div className="row mb-3">
-        <div className="jumbotron jumbotron-fluid border border-success mx-auto">
+        <div className="jumbotron jumbotron-fluid text-white mx-auto">
           <h2 className="display-8">Your Top Artists</h2>
         </div>
       </div>

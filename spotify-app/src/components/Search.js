@@ -5,6 +5,7 @@ const Search = ({accessToken, ChooseTrack}) => {
 
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+    const [finishFetch, setFinishFetch] = useState(false);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -17,21 +18,18 @@ const Search = ({accessToken, ChooseTrack}) => {
           return setSearchResults([]);
         }
     
-        async function Search() {
-          try {
-            const response = await fetch("http://localhost:8888/search", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                accessToken: accessToken,
-                searchContent: search,
-              }),
-            });
-    
-            const data = await response.json();
-    
+        fetch("http://localhost:8888/search", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              accessToken: accessToken,
+              searchContent: search,
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
             setSearchResults(
               data.map((tracks) => {
 
@@ -50,14 +48,10 @@ const Search = ({accessToken, ChooseTrack}) => {
                 };
               })
             );
+            setFinishFetch(true);
+          })
     
-            console.log(searchResults);
-          } catch (error) {
-            console.error(error);
-          }
-        }
-    
-        Search();
+            
       }, [search, accessToken]);
     
       return (
@@ -80,9 +74,19 @@ const Search = ({accessToken, ChooseTrack}) => {
           </div>
 
           <div className="row mb-3">
-            <div className="jumbotron jumbotron-fluid bg-black mx-auto w-50">
-              <h2 className="display-8 text-white">Search Result</h2>
-            </div>
+            {
+
+              ( finishFetch && search.length > 0 && searchResults.length > 0) ? 
+              <div className="jumbotron jumbotron-fluid mx-auto w-50">
+                <h2 className="display-8 text-white">Search Result</h2>
+              </div> 
+              : ( finishFetch && search.length > 0 && searchResults.length === 0 ) ? 
+              <div className="jumbotron jumbotron-fluid mx-auto w-50">
+                <h2 className="display-8 text-warning">No Result Found!</h2>
+              </div> : <div></div>
+
+            }
+            
           </div>
     
           <div className="row" style={{ marginBottom: '6rem' }} >

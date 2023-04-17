@@ -26,7 +26,7 @@ function App() {
   const Logout = (e)=>{
     e.preventDefault();
     localStorage.removeItem('code');
-    console.log(localStorage.getItem('code'));
+    accessToken = null;
     window.location.reload();
   };
 
@@ -45,7 +45,7 @@ function App() {
     (localStorage.getItem('code')) ? 
       <div className="App container">
       <Router>
-        <nav className="navbar navbar-expand-lg bg-dark text-white border border-5 border-success mb-2">
+        <nav className="navbar navbar-expand-lg bg-dark text-white border border-3 border-success mb-2">
           <div className="container-fluid">
             <Link className="navbar-brand text-white fs-2 fw-bold fst-italic me-3" to="/"> HCI-Spotify </Link>
             <button
@@ -79,7 +79,7 @@ function App() {
             </div>
           </div>
         </nav>
-        <nav class="navbar fixed-bottom bg-dark border-top border-3 border-success">
+        <nav class="navbar fixed-bottom bg-white border-top border-3 border-success">
             <Player accessToken={accessToken} trackUri={playingTrack?.uri}/>
         </nav>
 

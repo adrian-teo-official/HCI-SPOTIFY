@@ -13,20 +13,20 @@ function SearchResult({ Track, ChooseTrack}) {
         style={{ cursor: "pointer" }}
         onClick={playHandler}
         >
-        <div className="card mb-2" >
-            {/* <img
-            src={`${Track.albumImage}`}
-            className="card-img-top"
-            alt="Card image cap"
-            style={{ width: '100x', height: '100px' }}
-            /> */}
-            <ImageComponent imageSrc={`${Track.albumImage}`} width={300} height={200}></ImageComponent>
-            <div className="card-body">
-                <h5 className="card-title">{`${Track.name}`}</h5>
-                <p className="card-text">{`Artists: ${Track.artist}`}</p>
-                <p className="card-text">{`Album: ${Track.album}`}</p>
+            <div className="card mb-2 bg-dark" >
+                <img
+                src={`${Track.albumImage}`} 
+                className="card-img-top"
+                alt="Card image cap"
+                style={{ width: '200px', height: '200px' }}
+                />
+                {/* <ImageComponent imageSrc={`${Track.albumImage}`} width={300} height={200}></ImageComponent> */}
+                <div className="card-body text-white ">
+                    <h5 className="card-title text-truncate">{`${Track.name}`}</h5>
+                    <p className="card-text text-truncate">{`Artists: ${Track.artist}`}</p>
+                    <p className="card-text text-truncate">{`Album: ${Track.album}`}</p>
+                </div>
             </div>
-        </div>
         </div>
     );
 }
