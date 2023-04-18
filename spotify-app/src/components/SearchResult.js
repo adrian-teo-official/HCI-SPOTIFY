@@ -9,7 +9,7 @@ function SearchResult({ Track, ChooseTrack}) {
 
     return (
         <div
-        className="col-sm-3"
+        className="col-sm-2"
         style={{ cursor: "pointer" }}
         onClick={playHandler}
         >
@@ -18,13 +18,11 @@ function SearchResult({ Track, ChooseTrack}) {
                 src={`${Track.albumImage}`} 
                 className="card-img-top"
                 alt="Card image cap"
-                style={{ width: '200px', height: '200px' }}
                 />
-                {/* <ImageComponent imageSrc={`${Track.albumImage}`} width={300} height={200}></ImageComponent> */}
-                <div className="card-body text-white ">
-                    <h5 className="card-title text-truncate">{`${Track.name}`}</h5>
-                    <p className="card-text text-truncate">{`Artists: ${Track.artist}`}</p>
-                    <p className="card-text text-truncate">{`Album: ${Track.album}`}</p>
+                <div className="card-body text-white">
+                    <h6 className="card-title text-truncate">{`${Track.name}`}</h6>
+                    <p className="card-text text-truncate mb-0 small-p">{`Artists: ${Track.artist}`}</p>
+                    <p className="card-text text-truncate mb-0 small-p">{`Album: ${Track.album}`}</p>
                 </div>
             </div>
         </div>

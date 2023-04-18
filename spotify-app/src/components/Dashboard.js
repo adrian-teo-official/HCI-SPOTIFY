@@ -22,12 +22,19 @@ const Dashboard = ({ accessToken }) => {
       .then(data => {
         setMyTopTracks(
           data.map((tracks) => {
+
+            const smallestAlbumImage = tracks.album.images.reduce((smallest, image) => {
+              return image.height === Math.min(tracks.album.images.map(image => image.height))? image : smallest;
+              }, tracks.album.images[0]
+            )
+
             return {
               id: tracks.id,
               name: tracks.name,
               artist: tracks.artists[0].name,
               album: tracks.album.name,
-              uri: tracks.uri
+              uri: tracks.uri,
+              albumImage: smallestAlbumImage.url
             };
           })
         );
@@ -46,11 +53,18 @@ const Dashboard = ({ accessToken }) => {
       .then(data => {
         setMyTopArtists(
           data.map((artists) => {  
+
+            const smallestArtistsImage = artists.images.reduce((smallest, image) => {
+              return image.height === Math.min(artists.images.map(image => image.height))? image : smallest;
+              }, artists.images[0]
+            )
+
             return {
               id: artists.id,
               name: artists.name,
               genres: artists.genres,
-              uri: artists.uri
+              uri: artists.uri,
+              image: smallestArtistsImage.url
             };
           })
         );
@@ -69,10 +83,9 @@ const Dashboard = ({ accessToken }) => {
     .then(data =>{
       setMyRecentlyPlay(
         data.map((played) => {
-          const smallestAlbumImage = played.track.album.images.reduce(
-            (smallest, image) => {
-              if (image.height < smallest.height) return image
-              return smallest
+
+          const smallestAlbumImage = played.track.album.images.reduce((smallest, image) => {
+              return image.height === Math.min(played.track.album.images.map(image => image.height))? image : smallest;
             }, played.track.album.images[0]
           )
 
@@ -102,15 +115,15 @@ const Dashboard = ({ accessToken }) => {
       </div>
       <div className="row mb-3">
         {
-          (finishFetch)? myRecentlyPlay.slice(0,4).map((tracks)=>{
+          (finishFetch)? myRecentlyPlay.slice(0,6).map((tracks, index)=>{
             return (
-              <div className="col-sm-3">
-                <div className="card">
+              <div className="col-2 mb-2" key={index}>
+                <div className="card bg-dark">
                   <img src = {`${tracks.albumImage}`} className="card-img-top" alt="Card image cap" />
-                  <div className="card-body">
-                    <h5 className="card-title">{`${tracks.name}`}</h5>
-                    <p className="card-text">{`Artists: ${tracks.artist}`}</p>
-                    <p className="card-text">{`Album: ${tracks.album}`}</p>
+                  <div className="card-body text-white">
+                    <h6 className="card-title text-truncate">{`${tracks.name}`}</h6>
+                    <p className="card-text text-truncate mb-0 small-p">{`Artists: ${tracks.artist}`}</p>
+                    <p className="card-text text-truncate mb-0 small-p">{`Album: ${tracks.album}`}</p>
                   </div>
                 </div>
               </div>
@@ -125,14 +138,15 @@ const Dashboard = ({ accessToken }) => {
       </div>
       <div className="row mb-3">
         {
-          (finishFetch)? myTopTracks.slice(0,4).map((tracks)=>{
+          (finishFetch)? myTopTracks.slice(0,6).map((tracks, index)=>{
             return (
-              <div className="col-sm-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">{`${tracks.name}`}</h5>
-                    <p className="card-text">{`Artists: ${tracks.artist}`}</p>
-                    <p className="card-text">{`Album: ${tracks.album}`}</p>
+              <div className="col-2" key={index}>
+                <img src = {`${tracks.albumImage}`} className="card-img-top" alt="Card image cap" />
+                <div className="card bg-dark">
+                  <div className="card-body text-white">
+                    <h6 className="card-title text-truncate">{`${tracks.name}`}</h6>
+                    <p className="card-text text-truncate mb-0 small-p">{`Artists: ${tracks.artist}`}</p>
+                    <p className="card-text text-truncate mb-0 small-p">{`Album: ${tracks.album}`}</p>
                   </div>
                 </div>
               </div>
@@ -147,13 +161,14 @@ const Dashboard = ({ accessToken }) => {
       </div>
       <div className="row mb-3">
         {
-          (finishFetch)? myTopArtists.slice(0,4).map((artists)=>{
+          (finishFetch)? myTopArtists.slice(0,6).map((artists, index)=>{
             return (
-              <div className="col-sm-3">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">{`${artists.name}`}</h5>
-                    <p className="card-text">{`Genres: ${artists.genres}`}</p>
+              <div className="col-2" key={index}>
+                <div className="card bg-dark">
+                  <img src = {`${artists.image}`} className="card-img-top" alt="Card image cap" />
+                  <div className="card-body text-white">
+                    <h6 className="card-title text-truncate">{`${artists.name}`}</h6>
+                    <p className="card-text text-truncate small-p">{`Genres: ${artists.genres}`}</p>
                   </div>
                 </div>
               </div>
@@ -161,6 +176,7 @@ const Dashboard = ({ accessToken }) => {
           }) : <h5 className="text text-info text-center">Loading....</h5>
         }
       </div>
+      <div className="row" style={{ marginBottom: '6rem' }}/>
     </div>
 
   );

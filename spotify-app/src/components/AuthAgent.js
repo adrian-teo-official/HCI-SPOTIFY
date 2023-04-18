@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { redirect } from "react-router-dom";
 
 function AuthAgent(code) {
   const [accessToken, setAccessToken] = useState("");
@@ -45,7 +46,8 @@ function AuthAgent(code) {
         const data = await response.json();
         setAccessToken(data.accessToken);
         setExpiresIn(data.expiresIn);
-        window.history.pushState({}, null, "/Home");
+        redirect("/Dashboard")
+        window.history.pushState({}, null, "/");
       } catch (error) {
         window.location = "/";
       }
