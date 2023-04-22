@@ -1,7 +1,6 @@
 import React, {useState} from "react";
-import ImageComponent from "./ImageComponent";
 
-function SearchResult({ Track, ChooseTrack}) {
+function TrackCard({ Track, ChooseTrack}) {
 
     const playHandler = () => {
         ChooseTrack(Track);
@@ -9,11 +8,11 @@ function SearchResult({ Track, ChooseTrack}) {
 
     return (
         <div
-        className="col-sm-2"
+        className="col-sm-2 card-container"
         style={{ cursor: "pointer" }}
         onClick={playHandler}
         >
-            <div className="card mb-2 bg-dark" >
+            <div className="card mb-4 bg-dark" >
                 <img
                 src={`${Track.albumImage}`} 
                 className="card-img-top"
@@ -29,4 +28,4 @@ function SearchResult({ Track, ChooseTrack}) {
     );
 }
 
-export default SearchResult;
+export default TrackCard;

@@ -1,24 +1,27 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import './App.css';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import AuthAgent from "./components/AuthAgent";
-import Search from './components/Search';
+import Explore from './components/Explore';
 import Player from './components/Player';
 import {FiLogOut} from 'react-icons/fi';
-
+import "./components/Navbar.css";
 
 import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 
 const code = new URLSearchParams(window.location.search).get('code');
 
+
 function App() {
 
-  let accessToken = '';
-  
+  console.log(code);
+  let accessToken = null;
+
   const Logout = (e)=>{
     e.preventDefault();
     localStorage.removeItem('code');
+    localStorage.removeItem('access_token');
     accessToken = null;
     window.location.reload();
   };
@@ -29,10 +32,12 @@ function App() {
   }
 
   if(localStorage.getItem('code')){
-    accessToken = AuthAgent(localStorage.getItem('code'));
+    accessToken = AuthAgent(localStorage.getItem('code')) || localStorage.getItem('access_token'); // Auth Agent may return null while refresh so need additional handle
   }
 
   const [playingTrack, setPlayingTrack] = useState();
+  const [activeLink, setActiveLink] = useState('Home');
+
 
   const chooseTrack = (track) =>{
     setPlayingTrack(track);
@@ -45,7 +50,7 @@ function App() {
     (localStorage.getItem('code')) ? 
       <div className="App container">
         <Router>
-          <nav className="navbar navbar-expand-lg bg-dark text-white border border-3 border-success mb-2">
+          <nav className="navbar navbar-expand-lg text-white border border-3 mb-2">
             <div className="container-fluid">
               <Link className="navbar-brand text-white fs-2 fw-bold fst-italic me-3" to="/"> HCI-Spotify </Link>
               <button
@@ -62,13 +67,13 @@ function App() {
               <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav d-flex align-items-center">
                   <li className="nav-item active">
-                      <Link className="nav-link text-white fs-4 text-wrap" to="/"> Home </Link>
+                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Home' ? 'active-link' : 'text-white'}`} to="/" onClick={() => setActiveLink('Home')}> Home </Link>
                   </li>
                   <li className="nav-item active">
-                    <Link className="nav-link text-white fs-4 text-wrap" to="/Search"> Search </Link>
+                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Explore' ? 'active-link' : 'text-white'}`} to="/Explore" onClick={() => setActiveLink('Explore')}> Explore </Link>
                   </li>
                   <li className="nav-item active">
-                    <Link className="nav-link text-white fs-4 text-wrap" to="/About"> About </Link>
+                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'About' ? 'active-link' : 'text-white'}`} to="/About" onClick={() => setActiveLink('About')}> About </Link>
                   </li>
                 </ul>
                 <div className="nav-item active ms-auto d-flex align-items-center">
@@ -79,20 +84,20 @@ function App() {
               </div>
             </div>
           </nav>
-          <nav class="navbar fixed-bottom bg-white border-top border-3 border-success">
+          <nav className="navbar fixed-bottom bg-white border-top border-3 border-success">
               <Player accessToken={accessToken} trackUri={playingTrack?.uri}/>
           </nav>
 
           <Routes>
 
             <Route
-              path="/Search"
-              element={<Search accessToken={accessToken} ChooseTrack = {chooseTrack}></Search>}
+              path="/Explore"
+              element={<Explore accessToken={accessToken} ChooseTrack = {chooseTrack}></Explore>}
             />
 
             <Route
               path="/"
-              element={<Dashboard accessToken={accessToken}></Dashboard>}
+              element={<Dashboard accessToken={accessToken} ChooseTrack = {chooseTrack}></Dashboard>}
             />
 
           </Routes>

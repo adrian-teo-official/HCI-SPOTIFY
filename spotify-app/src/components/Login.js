@@ -28,7 +28,8 @@ const clientParams = new URLSearchParams({
       'user-read-private'
     ].join(' '),
     redirect_uri: redirect_uri,
-    state: 'play-with-me'
+    state: 'play-with-me',
+    show_dialog: true
   });
   
 const AUTH_URL = `https://accounts.spotify.com/authorize?${clientParams.toString()}`;

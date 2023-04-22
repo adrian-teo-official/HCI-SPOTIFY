@@ -1,0 +1,42 @@
+
+/* Navbar background color */
+.navbar.bg-dark {
+    background-color: #222831 !important;
+}
+
+/* Navbar link hover color */
+.nav-link:hover {
+    color: #1db954b6 !important;
+}
+
+/* Navbar button hover color */
+.nav-item .btn:hover {
+    color: #1db954 !important;
+}
+
+/* Navbar brand font style */
+.navbar-brand {
+    font-family: "Poppins", sans-serif;
+}
+
+/* Navbar link font style */
+.nav-link {
+    font-family: "Poppins", sans-serif;
+}
+  
+  /* Navbar border color */
+.navbar.border {
+    border-color: #1db954 !important;
+}
+  
+  /* Navbar link transition */
+.nav-link, .nav-item .btn {
+    transition: color 0.3s ease;
+}
+
+/* Active link color */
+.active-link {
+    color: #1db954 !important;
+    
+}
+  

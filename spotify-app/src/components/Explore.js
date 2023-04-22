@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import SearchResult from "./SearchResult";
+import TrackCard from "./TrackCard";
 
-const Search = ({accessToken, ChooseTrack}) => {
+const Explore = ({accessToken, ChooseTrack}) => {
 
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -56,22 +56,25 @@ const Search = ({accessToken, ChooseTrack}) => {
     
       return (
         <div className="Container">
-          <div className="Search row justify-content-center">
-            <div className="col-md-6">
-              <form onSubmit={submitHandler} className="form-inline">
-                  <div className="form-group">
-                    <input
-                      className="form-control border border-black"
-                      name="search"
-                      defaultValue={search}
-                      placeholder="Search Songs/Artists"
-                      minLength="2"
-                      required />
-                  </div>
-                  <button className="btn btn-outline-dark bg-black text-white mt-2 mb-4" type="submit"> Search </button>
-              </form>
-            </div>
+         <div className="Search row justify-content-center">
+          <div className="col-md-6">
+            <form onSubmit={submitHandler} className="d-flex custom-search-form">
+              <div className="form-group flex-grow-1 mr-2">
+                <input
+                  className="form-control custom-search-input w-100"
+                  name="search"
+                  defaultValue={search}
+                  placeholder="Search Songs/Artists"
+                  minLength="2"
+                  required
+                />
+              </div>
+              <button className="btn custom-search-button ms-2 mb-4" type="submit">
+                Search
+              </button>
+            </form>
           </div>
+        </div>
 
           <div className="row mb-3">
             {
@@ -94,7 +97,7 @@ const Search = ({accessToken, ChooseTrack}) => {
                 searchResults.map((track) => {
     
                     return (
-                    <SearchResult Track = {track} key={track.uri} ChooseTrack = {ChooseTrack}></SearchResult>
+                    <TrackCard Track = {track} key={track.uri} ChooseTrack = {ChooseTrack}></TrackCard>
                     )})
                     
             }
@@ -104,4 +107,4 @@ const Search = ({accessToken, ChooseTrack}) => {
       );
 }
 
-export default Search;
+export default Explore;

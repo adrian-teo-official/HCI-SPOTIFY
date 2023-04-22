@@ -28,14 +28,13 @@ app.post("/refresh", (req, res) => {
     })
     .catch((err) => {
       res.sendStatus(400);
-      console.log(err);
     });
 });
 
 //own app server
 // post request for login
 app.post("/login", (req, res) => {
-  const code = (req.body.code + "").trim(); // link to the web address "code"
+  const code = req.body.code; // link to the web address "code"
   const credentials = {
     clientId: "ee859872f4354d5093bba8275dd2ace1",
     clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
@@ -53,7 +52,7 @@ app.post("/login", (req, res) => {
       });
     })
     .catch((err) => {
-      // console.log(err);
+       console.log(err);
     });
 });
 
@@ -100,6 +99,7 @@ app.post("/getMyTopTracks", (req, res) => {
       res.json(data.body.items);
     })
     .catch((err) => {
+      
       res.sendStatus(400);
     });
 });
@@ -124,6 +124,7 @@ app.post("/getMyTopArtists", (req, res) => {
       res.json(data.body.items);
     })
     .catch((err) => {
+    
       res.sendStatus(400);
     });
 });
