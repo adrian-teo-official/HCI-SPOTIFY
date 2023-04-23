@@ -29,7 +29,7 @@ const clientParams = new URLSearchParams({
     ].join(' '),
     redirect_uri: redirect_uri,
     state: 'play-with-me',
-    show_dialog: true
+    //show_dialog: true
   });
   
 const AUTH_URL = `https://accounts.spotify.com/authorize?${clientParams.toString()}`;

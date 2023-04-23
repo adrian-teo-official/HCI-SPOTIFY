@@ -52,7 +52,7 @@ app.post("/login", (req, res) => {
       });
     })
     .catch((err) => {
-       console.log(err);
+      res.sendStatus(400);
     });
 });
 
@@ -148,6 +148,31 @@ app.post("/getMyRecentlyPlay", (req, res) => {
       res.json(data.body.items);
     })
     .catch((err) => {
+      res.sendStatus(400);
+    });
+});
+
+app.post("/getTracksAudioFeatures", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const tracksIds = req.body.trackIds;
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getAudioFeaturesForTracks([tracksIds])
+    .then((data) => {
+      res.json(data.body.audio_features); // need change
+    })
+    .catch((err) => {
+      console.log(err); 
       res.sendStatus(400);
     });
 });

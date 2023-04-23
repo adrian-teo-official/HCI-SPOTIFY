@@ -5,12 +5,14 @@ import Dashboard from './components/Dashboard';
 import AuthAgent from "./components/AuthAgent";
 import Explore from './components/Explore';
 import Player from './components/Player';
+import ListeningHabit from "./components/ListeningHabit";
 import {FiLogOut} from 'react-icons/fi';
 import "./components/Navbar.css";
 
 import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 
 const code = new URLSearchParams(window.location.search).get('code');
+//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
 
 
 function App() {
@@ -73,6 +75,9 @@ function App() {
                     <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Explore' ? 'active-link' : 'text-white'}`} to="/Explore" onClick={() => setActiveLink('Explore')}> Explore </Link>
                   </li>
                   <li className="nav-item active">
+                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Listening-Habit' ? 'active-link' : 'text-white'}`} to="/Listening-Habit" onClick={() => setActiveLink('Listening-Habit')}> Listening Habit </Link>
+                  </li>
+                  <li className="nav-item active">
                     <Link className={`nav-link fs-4 text-wrap ${activeLink === 'About' ? 'active-link' : 'text-white'}`} to="/About" onClick={() => setActiveLink('About')}> About </Link>
                   </li>
                 </ul>
@@ -91,6 +96,11 @@ function App() {
           <Routes>
 
             <Route
+              path="/Listening-Habit"
+              element={<ListeningHabit accessToken={accessToken}></ListeningHabit>}
+            />
+
+            <Route
               path="/Explore"
               element={<Explore accessToken={accessToken} ChooseTrack = {chooseTrack}></Explore>}
             />
@@ -99,6 +109,7 @@ function App() {
               path="/"
               element={<Dashboard accessToken={accessToken} ChooseTrack = {chooseTrack}></Dashboard>}
             />
+
 
           </Routes>
         </Router>
