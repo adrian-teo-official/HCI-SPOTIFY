@@ -13,7 +13,7 @@ import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 
 const code = new URLSearchParams(window.location.search).get('code');
 //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
-
+//look up
 
 function App() {
 
