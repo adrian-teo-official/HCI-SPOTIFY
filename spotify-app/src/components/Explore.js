@@ -10,47 +10,47 @@ const Explore = ({accessToken, ChooseTrack}) => {
     const submitHandler = (e) => {
         e.preventDefault();
         setSearch(e.target.search.value);
-      };
+    };
     
-      //Search
-      useEffect(() => {
-        if (!search || !accessToken) {
-          return setSearchResults([]);
-        }
-    
-        fetch("http://localhost:8888/search", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              accessToken: accessToken,
-              searchContent: search,
-            }),
-          })
-          .then(response => response.json())
-          .then(data => {
-            setSearchResults(
-              data.map((tracks) => {
+    //Search
+    useEffect(() => {
+      if (!search || !accessToken) {
+        return setSearchResults([]);
+      }
+  
+      fetch("http://localhost:8888/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            accessToken: accessToken,
+            searchContent: search,
+          }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          setSearchResults(
+            data.map((tracks) => {
 
-                const smallestAlbumImage = tracks.album.images.reduce((smallest, image) => {
-                  return image.height === Math.min(tracks.album.images.map(image => image.height)) ? image : smallest;
-                }, tracks.album.images[0]);
-                 
+              const smallestAlbumImage = tracks.album.images.reduce((smallest, image) => {
+                return image.height === Math.min(tracks.album.images.map(image => image.height)) ? image : smallest;
+              }, tracks.album.images[0]);
+                
 
-                return {
-                  id: tracks.id,
-                  name: tracks.name,
-                  artist: tracks.artists[0].name,
-                  album: tracks.album.name,
-                  albumImage: smallestAlbumImage.url,
-                  uri: tracks.uri
-                };
-              })
-            );
-            setFinishFetch(true);
-          })
-    
+              return {
+                id: tracks.id,
+                name: tracks.name,
+                artist: tracks.artists[0].name,
+                album: tracks.album.name,
+                albumImage: smallestAlbumImage.url,
+                uri: tracks.uri
+              };
+            })
+          );
+          setFinishFetch(true);
+        })
+  
             
       }, [search, accessToken]);
     

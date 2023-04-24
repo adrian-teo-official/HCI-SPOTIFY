@@ -177,4 +177,29 @@ app.post("/getTracksAudioFeatures", (req, res) => {
     });
 });
 
+app.post("/getRecentlyArtists", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const recentlyArtistsIds = req.body.recentlyArtistsIds;
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getArtists(recentlyArtistsIds)
+    .then((data) => {
+      res.json(data.body.artists); // need change
+    })
+    .catch((err) => {
+      console.log(err); 
+      res.sendStatus(400);
+    });
+});
+
 app.listen(8888);
