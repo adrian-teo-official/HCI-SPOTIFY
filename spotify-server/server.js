@@ -202,4 +202,52 @@ app.post("/getRecentlyArtists", (req, res) => {
     });
 });
 
+app.post('/getRecommendations', (req, res) => {
+
+  console.log(req.body);
+
+  const accessToken = req.body.accessToken;
+
+  const target_energy = req.body.energy;
+  const target_acousticness = req.body.acousticness;
+  const target_danceability = req.body.danceability;
+  const target_valence = req.body.valence;
+
+  const seed_artists = req.body.seed_artists;
+  const seed_genres = req.body.seed_genres;
+  const seed_tracks = req.body.seed_tracks;
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+  .getRecommendations({
+    target_energy: target_energy,
+    target_acousticness: target_acousticness,
+    target_danceability: target_danceability,
+    target_valence: target_valence,
+    seed_artists: seed_artists,
+    seed_genres: seed_genres,
+    seed_tracks: seed_tracks,
+  })
+  .then(
+    function (data) {
+      console.log(data);
+      res.json(data.body);
+    },
+    function (err) {
+      console.error(err.message);
+      res.status(500).json({ error: "Failed to get recommendations" });
+    }
+  );
+
+});
+
 app.listen(8888);

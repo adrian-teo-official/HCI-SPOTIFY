@@ -12,6 +12,7 @@ const ListeningHabit = ({accessToken}) =>{
 
 
     const [topGenres, setTopGenres] = useState([]);
+    const [mappingGenres, setMappingGenres] = useState(false);
 
 
     const [topTracksAudioFeatures, setTopTracksAudioFeatures] = useState([]);
@@ -241,8 +242,6 @@ const ListeningHabit = ({accessToken}) =>{
 
         }
 
-
-
     }, [accessToken, recentlyArtistsIds, mappingRecentlyArtists])
 
     const calculateAudioFeaturePreferences = (tracks) => {
@@ -301,6 +300,7 @@ const ListeningHabit = ({accessToken}) =>{
         }
 
     },[recentlyPlayFeaturesFinishFetch, topTracksFeaturesFinishFetch, topTracksAudioFeatures, recentlyPlayAudioFeatures])
+
 
     const chartRef = useRef(null);
 
@@ -470,8 +470,6 @@ const ListeningHabit = ({accessToken}) =>{
         return songs;
     }
 
-    
-
     useEffect (() => {
         const genres = {};
         if(topArtistsFinishFetch)
@@ -491,9 +489,46 @@ const ListeningHabit = ({accessToken}) =>{
             });
         }
         setTopGenres(genres);
+        setMappingGenres(true);
 
 
     },[topArtistsFinishFetch])
+
+    useEffect(() =>{
+        if(topTracksFinishFetch && topArtistsFinishFetch 
+            && recentlyPlayedFinishFetch && mappingRecentlyArtists 
+            && topTracksFeaturesFinishFetch && recentlyPlayFeaturesFinishFetch && mappingGenres)
+        {
+            fetch("http://localhost:8888/getRecommendations", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    accessToken: accessToken,
+                    target_energy: currentAvgCombinationTrackFeatures.energy,
+                    target_acousticness: currentAvgCombinationTrackFeatures.acousticness,
+                    target_danceability: currentAvgCombinationTrackFeatures.danceability,
+                    target_valence: currentAvgCombinationTrackFeatures.valence,
+                    seed_artists: [topArtists.slice(0,1).map((artist) => artist.id),recentlyArtists.slice(0,1).map((artist) => artist.id)],
+                    seed_genres: Object.keys(topGenres).slice(0,1).map((genre, count) => genre),
+                    seed_tracks: [topTrackIds.slice(0,1).map((track) => track.id), recentlyPlayIds.slice(0,1).map((track) => track.id)]
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            
+        }
+
+    },[accessToken, 
+        topTracksFinishFetch, 
+        topArtistsFinishFetch,
+        recentlyPlayedFinishFetch, 
+        mappingRecentlyArtists,topTracksFeaturesFinishFetch,
+        recentlyPlayFeaturesFinishFetch,topGenres, 
+        currentAvgCombinationTrackFeatures, mappingGenres])
 
     const ArtistsShowMore = (e) =>{
         e.preventDefault();
@@ -789,6 +824,7 @@ const ListeningHabit = ({accessToken}) =>{
                 </div>
 
             </div>
+            <div className="row border border-3 border-top-0 border-start-0 border-end-0 mt-2"></div>
             <div className="row" style={{ marginBottom: '7rem' }}/>
         </div>
         
