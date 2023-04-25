@@ -177,6 +177,31 @@ app.post("/getTracksAudioFeatures", (req, res) => {
     });
 });
 
+app.post("/getTrackAudioFeatures", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const tracksId = req.body.trackId;
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getAudioFeaturesForTrack(tracksId)
+    .then((data) => {
+      res.json(data.body);
+    })
+    .catch((err) => {
+      console.log(err); 
+      res.sendStatus(400);
+    });
+});
+
 app.post("/getRecentlyArtists", (req, res) => {
   const accessToken = req.body.accessToken; // link to the web address "accesstoken"
   const recentlyArtistsIds = req.body.recentlyArtistsIds;
@@ -236,10 +261,10 @@ app.post('/getRecommendations', (req, res) => {
     seed_artists: seed_artists,
     seed_genres: seed_genres,
     seed_tracks: seed_tracks,
+    limit: 24
   })
   .then(
     function (data) {
-      console.log(data);
       res.json(data.body);
     },
     function (err) {

@@ -118,7 +118,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
         {
           (finishFetch)? myRecentlyPlay.slice(0,6).map((tracks, index)=>{
             return (
-              <TrackCard Track={tracks} ChooseTrack={ChooseTrack}/>
+              <TrackCard accessToken={accessToken} Track={tracks} ChooseTrack={ChooseTrack}/>
             )
           }) : <h5 className="text text-info text-center">Loading....</h5>
         }
@@ -132,7 +132,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
         {
           (finishFetch)? myTopTracks.slice(0,6).map((tracks, index)=>{
             return (
-              <TrackCard Track={tracks} ChooseTrack={ChooseTrack}/>
+              <TrackCard accessToken={accessToken} Track={tracks} ChooseTrack={ChooseTrack}/>
             )
           }) : <h5 className="text text-info text-center">Loading....</h5>
         }

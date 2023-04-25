@@ -97,7 +97,7 @@ function App() {
 
             <Route
               path="/Listening-Habit"
-              element={<ListeningHabit accessToken={accessToken}></ListeningHabit>}
+              element={<ListeningHabit accessToken={accessToken} ChooseTrack = {chooseTrack}></ListeningHabit>}
             />
 
             <Route

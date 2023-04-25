@@ -1,27 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 import Chart from 'chart.js/auto';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
+import TrackCard from "./TrackCard";
 
-const ListeningHabit = ({accessToken}) =>{
+const ListeningHabit = ({accessToken, ChooseTrack}) =>{
 
     const [topTrackIds, setTopTrackIds] = useState([]);
     const [recentlyPlayIds, setRecentlyPlayIds] = useState([]);
     const [topArtists, setTopArtists] = useState([]);
     const [recentlyArtistsIds, setRecentlyArtistsIds] = useState([]);
     const [recentlyArtists, setRecentlyArtists] = useState([]);
+    const [recommendationsTracks, setRecommendationsTracks] = useState([]);
 
-
-    const [topGenres, setTopGenres] = useState([]);
+    const [topGenres, setTopGenres] = useState({});
     const [mappingGenres, setMappingGenres] = useState(false);
-
 
     const [topTracksAudioFeatures, setTopTracksAudioFeatures] = useState([]);
     const [recentlyPlayAudioFeatures, setRecentlyPlayAudioFeatures] = useState([]);
 
-    const [currentAvgTopTracksFeatures, setCurrentAvgTopTracksFeatures] = useState([]);
-    const [currentAvgRecentlyPlayedFeatures, setCurrentAvgRecentlyPlayedFeatures] = useState([]);
-
-    const [currentAvgCombinationTrackFeatures, setCurrentAvgCombinationTrackFeatures] = useState([]);
+    const [currentAvgTopTracksFeatures, setCurrentAvgTopTracksFeatures] = useState({});
+    const [currentAvgRecentlyPlayedFeatures, setCurrentAvgRecentlyPlayedFeatures] = useState({});
+    const [currentAvgCombinationTrackFeatures, setCurrentAvgCombinationTrackFeatures] = useState({});
 
     const [topTracksFinishFetch, setTopTracksFinishFetch] = useState(false);
     const [recentlyPlayedFinishFetch, setRecentlyPlayedFinishFetch] = useState(false);
@@ -29,12 +28,14 @@ const ListeningHabit = ({accessToken}) =>{
     const [topTracksFeaturesFinishFetch, setTopTracksFeaturesFinishFetch] = useState(false);
     const [topArtistsFinishFetch, setTopArtistsFinishFetch] = useState(false);
     const [mappingRecentlyArtists, setMappingRecentlyArtists] = useState(false);
+    const [recomandationFinishFetch, setRecomandationFinishFetch] = useState(false);
 
     const [artistsShowMore, setArtistsShowMore] = useState(false);
     const [trackShowMore, setTrackShowMore] = useState(false);
 
     const [expandedDecade, setExpandedDecade] = useState(null);
 
+    // Get Top Track, Recently Play, Top Artists
     useEffect (() => {
 
         fetch("http://localhost:8888/getMyTopTracks", {
@@ -134,11 +135,36 @@ const ListeningHabit = ({accessToken}) =>{
 
     },[accessToken])
 
+    //Getting genres from top artists
+    useEffect (() => {
+        const genres = {};
+        if(topArtistsFinishFetch)
+        {
+            topArtists.forEach(artists => {
+                console.log(artists);
+                artists.genres.forEach(genre => {
+                    if(genres[genre]){
+                        genres[genre] += 1;
+                    }
+                    else {
+                        genres[genre] = 1;
+                    }
+                    
+                });
+            
+            });
+        }
+        setTopGenres(genres);
+        setMappingGenres(true);
+
+
+    },[topArtistsFinishFetch])
+
+    // Get Track Audio Features for top track, recently play track, mapping recently play artists
     useEffect(() =>{
 
         if(recentlyPlayedFinishFetch && topTracksFinishFetch)
         {
-
             fetch("http://localhost:8888/getTracksAudioFeatures", {
                 method: "POST",
                 headers: {
@@ -202,6 +228,7 @@ const ListeningHabit = ({accessToken}) =>{
         } 
     },[accessToken, topTrackIds, recentlyPlayIds, topTracksFinishFetch, recentlyPlayedFinishFetch])
 
+    // Recently play artists detail
     useEffect(() =>{
 
         if(recentlyArtistsIds.length > 0 && mappingRecentlyArtists)
@@ -244,6 +271,7 @@ const ListeningHabit = ({accessToken}) =>{
 
     }, [accessToken, recentlyArtistsIds, mappingRecentlyArtists])
 
+    // calculating avg of the audio features
     const calculateAudioFeaturePreferences = (tracks) => {
         const totalTracks = tracks.length;
         let featureSums = {
@@ -268,6 +296,7 @@ const ListeningHabit = ({accessToken}) =>{
         };
     };
 
+    // Calculating the combination of audio features recently play and top tracks
     const combineAudioFeaturePreferences = ( topTracksFeaturesPrefs, recentlyPlayedFeaturesPrefs, topTracksFeaturesWeight, recentlyPlayedFeaturesWeight) => {
 
         const totalWeight = topTracksFeaturesWeight + recentlyPlayedFeaturesWeight;
@@ -285,7 +314,7 @@ const ListeningHabit = ({accessToken}) =>{
         };
     };
 
-
+    // Calculate audio features trigger...
     useEffect(() =>{
 
         if(recentlyPlayFeaturesFinishFetch && topTracksFeaturesFinishFetch)
@@ -301,7 +330,7 @@ const ListeningHabit = ({accessToken}) =>{
 
     },[recentlyPlayFeaturesFinishFetch, topTracksFeaturesFinishFetch, topTracksAudioFeatures, recentlyPlayAudioFeatures])
 
-
+    // bar chart of the audio features
     const chartRef = useRef(null);
 
     useEffect(() => {
@@ -387,6 +416,7 @@ const ListeningHabit = ({accessToken}) =>{
         }
       }, [currentAvgCombinationTrackFeatures, currentAvgRecentlyPlayedFeatures, currentAvgTopTracksFeatures]);
 
+    // Decade listening pie
     const pieRef = useRef(null);
 
     // Process trackData to calculate track counts per year
@@ -459,6 +489,7 @@ const ListeningHabit = ({accessToken}) =>{
 
     }, [topTrackIds]);
 
+    // Generating the song of decade
     const generateSongsByDecade = (decade, tracks) => {
         // Replace this with the actual logic to filter the songs based on the decade
         const songs = tracks.filter((song) => {
@@ -470,31 +501,9 @@ const ListeningHabit = ({accessToken}) =>{
         return songs;
     }
 
-    useEffect (() => {
-        const genres = {};
-        if(topArtistsFinishFetch)
-        {
-            topArtists.forEach(artists => {
-                console.log(artists);
-                artists.genres.forEach(genre => {
-                    if(genres[genre]){
-                        genres[genre] += 1;
-                    }
-                    else {
-                        genres[genre] = 1;
-                    }
-                    
-                });
-            
-            });
-        }
-        setTopGenres(genres);
-        setMappingGenres(true);
-
-
-    },[topArtistsFinishFetch])
-
+    //Reccomandation
     useEffect(() =>{
+
         if(topTracksFinishFetch && topArtistsFinishFetch 
             && recentlyPlayedFinishFetch && mappingRecentlyArtists 
             && topTracksFeaturesFinishFetch && recentlyPlayFeaturesFinishFetch && mappingGenres)
@@ -510,14 +519,36 @@ const ListeningHabit = ({accessToken}) =>{
                     target_acousticness: currentAvgCombinationTrackFeatures.acousticness,
                     target_danceability: currentAvgCombinationTrackFeatures.danceability,
                     target_valence: currentAvgCombinationTrackFeatures.valence,
-                    seed_artists: [topArtists.slice(0,1).map((artist) => artist.id),recentlyArtists.slice(0,1).map((artist) => artist.id)],
+                    seed_artists: [...topArtists.slice(0,1).map((artist) => artist.id), ...recentlyArtists.slice(0,1).map((artist) => artist.id)],
                     seed_genres: Object.keys(topGenres).slice(0,1).map((genre, count) => genre),
-                    seed_tracks: [topTrackIds.slice(0,1).map((track) => track.id), recentlyPlayIds.slice(0,1).map((track) => track.id)]
+                    seed_tracks: [...topTrackIds.slice(0,1).map((track) => track.id), ...recentlyPlayIds.slice(0,1).map((track) => track.id)]
                 }),
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                console.log(data.tracks);
+                setRecommendationsTracks(
+                    data.tracks.map((track) =>{
+
+                        const smallestAlbumImage = track.album.images.reduce((smallest, image) => {
+                            return image.height === Math.min(track.album.images.map(image => image.height))? image : smallest;
+                            }, track.album.images[0]
+                        )
+                        
+                        return {
+                            id: track.id,
+                            artist: track.artists[0].name,
+                            album: track.album.name,
+                            name: track.name,
+                            albumImage: smallestAlbumImage.url,
+                            uri: track.uri
+                        }
+
+                    })
+                );
+                
+                setRecomandationFinishFetch(true);
+                console.log(recommendationsTracks);
             })
             
         }
@@ -527,8 +558,9 @@ const ListeningHabit = ({accessToken}) =>{
         topArtistsFinishFetch,
         recentlyPlayedFinishFetch, 
         mappingRecentlyArtists,topTracksFeaturesFinishFetch,
-        recentlyPlayFeaturesFinishFetch,topGenres, 
+        recentlyPlayFeaturesFinishFetch,
         currentAvgCombinationTrackFeatures, mappingGenres])
+    
 
     const ArtistsShowMore = (e) =>{
         e.preventDefault();
@@ -539,7 +571,6 @@ const ListeningHabit = ({accessToken}) =>{
             setArtistsShowMore(true);
         }
     }
-
     const TracksShowMore = (e) =>{
         e.preventDefault();
         if(trackShowMore) {
@@ -566,10 +597,71 @@ const ListeningHabit = ({accessToken}) =>{
 
                 <div className="col-md-6">
                     <div className="Explaination chart-container" style={{
-                            textAlign: 'justify',
+                            textAlign: 'start',
                             color: 'white',
                         }}>
-                            <h3>Explain</h3>
+                            <h3>Description</h3>
+                            <div className="row" style={{fontSize: "13px"}}>
+                                <div className="col-md-6">
+                                    <div className="rectangle rectangle-1">
+                                        Your current taste is 
+                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.acousticness)? ` ${(currentAvgRecentlyPlayedFeatures.acousticness).toFixed(2) * 100}% `: `N/A`}</span>
+                                        acoustic.
+                                        <br/>
+                                        &emsp; &emsp; Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.acousticness)? ` ${(currentAvgCombinationTrackFeatures.acousticness).toFixed(2) * 100}% `: `N/A`}</span>
+                                        acoustic.
+                                        {/* <br/>
+                                        &emsp; <span style={{color: "orange", fontWeight:"bold"}}>{(currentAvgRecentlyPlayedFeatures.acousticness > currentAvgCombinationTrackFeatures.acousticness) 
+                                        ? `You have a strong preference for acoustic music, which typically features natural-sounding instruments.` 
+                                        : `You have a preference for electronic or synthesized music, which often includes electronic instruments.`}</span> */}
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="rectangle rectangle-2">
+                                        Your current taste is 
+                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.danceability)? ` ${(currentAvgRecentlyPlayedFeatures.danceability).toFixed(2) * 100}% `: `N/A`}</span>
+                                        danceable.
+                                        <br/>
+                                        &emsp; &emsp; Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.danceability)? ` ${(currentAvgCombinationTrackFeatures.danceability).toFixed(2) * 100}% `: `N/A`}</span>
+                                        danceable.
+                                        <br/>
+                                        {/* &emsp; <span style={{color: "orange", fontWeight:"bold"}}>{(currentAvgRecentlyPlayedFeatures.danceability > currentAvgCombinationTrackFeatures.danceability) 
+                                        ? `You have a strong preference for acoustic music, which typically features natural-sounding instruments.` 
+                                        : `You have a preference for electronic or synthesized music, which often includes electronic instruments.`}</span> */}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row" style={{fontSize: "13px"}}>
+                                <div className="col-md-6">
+                                    <div className="rectangle rectangle-3">
+                                        Your current taste is 
+                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.energy)? ` ${(currentAvgRecentlyPlayedFeatures.energy).toFixed(2) * 100}% `: `N/A`}</span>
+                                        energetic.
+                                        <br/>
+                                        &emsp; &emsp; Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.energy)? ` ${(currentAvgCombinationTrackFeatures.energy).toFixed(2) * 100}% `: `N/A`}</span>
+                                        energetic.
+                                        <br/>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="rectangle rectangle-4">
+                                        Your current taste is 
+                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.valence)? ` ${(currentAvgRecentlyPlayedFeatures.valence).toFixed(2) * 100}% `: `N/A`}</span>
+                                        positive.
+                                        <br/>
+                                        &emsp; &emsp; Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.valence)? ` ${(currentAvgCombinationTrackFeatures.valence).toFixed(2) * 100}% `: `N/A`}</span>
+                                        positive.
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row" style={{fontSize: "13px"}} >
+                                <div className="col-md-12">
+                                    <div className="rectangle rectangle-1">
+                                       <span style={{color: "orange", fontWeight: "bold"}}>The Taste are calculated based on your recently play and the combination of your top played track in Spotify.</span>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                     
                 </div>
@@ -685,48 +777,23 @@ const ListeningHabit = ({accessToken}) =>{
             <div className="row">
                 <div className="col-md-6 mt-2">
                     <h3 className="text-white mb-3">Top Tracks</h3>
-                        
-                        {
-                            (trackShowMore) ?
-                            topTrackIds.map((track) => (
-                                <div
-                                key={track.id}
-                                className="d-flex align-items-center mb-2"
-                                style={{
-                                    backgroundColor: "#282828",
-                                    borderRadius: "5px",
-                                    padding: "8px",
-                                    transition: "1s",
-                                }}
-                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1db954")}
-                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#282828")}
-                                >
-                                    <div className="me-2">
-                                        <img src={track.albumImage} alt={track.name} width="40" height="40" />
-                                    </div>
-                                    <div className="flex-grow-1 text-white">{track.name}</div>
+                    <div className="track-artist-list" style = {{maxHeight: 64 * ((trackShowMore) ? topTrackIds.length : 5) + "px"}}>
+                    {
+                        topTrackIds.map((track) => (
+                            <div
+                            key={track.id}
+                            className="d-flex align-items-center mb-2 track-artist-item-container"
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1db954")}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#282828")}
+                            >
+                                <div className="me-2">
+                                    <img src={track.albumImage} alt={track.name} width="40" height="40" />
                                 </div>
-                            )) : //else
-                            topTrackIds.slice(0,5).map((track) => (
-                                <div
-                                key={track.id}
-                                className="d-flex align-items-center mb-2"
-                                style={{
-                                    backgroundColor: "#282828",
-                                    borderRadius: "5px",
-                                    padding: "8px",
-                                    transition: "0.3s",
-                                }}
-                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1db954")}
-                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#282828")}
-                                >
-                                    <div className="me-2">
-                                        <img src={track.albumImage} alt={track.name} width="40" height="40" />
-                                    </div>
-                                    <div className="flex-grow-1 text-white">{track.name}</div>
-                                </div>
-                            ))
-                        }
+                                <div className="flex-grow-1 text-white">{track.name}</div>
+                            </div>
+                        )) 
+                    }
+                    </div>
                     <button
                     className="btn"
                     style={{
@@ -754,39 +821,14 @@ const ListeningHabit = ({accessToken}) =>{
                 </div>
 
                 <div className="col-md-6 mt-2">
-                    <h3 className="text-white mb-3">Top Artists</h3>  
+                    <h3 className="text-white mb-3">Top Artists</h3>
+                    <div className="track-artist-list" style = {{maxHeight: 64 * ((artistsShowMore) ? topArtists.length : 5) + "px"}}> 
                     {
-                        (artistsShowMore) ?
+                        
                         topArtists.map((artist) => (
                             <div
                             key={artist.id}
-                            className="d-flex align-items-center mb-2"
-                            style={{
-                                backgroundColor: "#282828",
-                                borderRadius: "5px",
-                                padding: "8px",
-                                transition: "0.3s",
-                            }}
-                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1db954")}
-                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#282828")}
-                            >
-                                <div className="me-2">
-                                    <img src={artist.image} alt={artist.name} width="40" height="40" />
-                                </div>
-                                <div className="flex-grow-1 text-white">{artist.name}</div>
-                            </div>
-                        )) : //else
-
-                        topArtists.slice(0,5).map((artist) => (
-                            <div
-                            key={artist.id}
-                            className="d-flex align-items-center mb-2"
-                            style={{
-                                backgroundColor: "#282828",
-                                borderRadius: "5px",
-                                padding: "8px",
-                                transition: "0.3s",
-                            }}
+                            className="d-flex align-items-center mb-2 track-artist-item-container"
                             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1db954")}
                             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#282828")}
                             >
@@ -797,6 +839,7 @@ const ListeningHabit = ({accessToken}) =>{
                             </div>
                         ))
                     }
+                    </div>
                     <button
                     className="btn"
                     style={{
@@ -825,6 +868,17 @@ const ListeningHabit = ({accessToken}) =>{
 
             </div>
             <div className="row border border-3 border-top-0 border-start-0 border-end-0 mt-2"></div>
+            <div className="row mt-2">
+                <h3 className="text-white mb-3">Recomandation</h3>
+                {
+                    (recomandationFinishFetch) ?
+                        recommendationsTracks.map((track) => <TrackCard accessToken={accessToken} Track={track} ChooseTrack={ChooseTrack}></TrackCard> )  
+                        : <div class="loading-container d-flex justify-content-center align-items-start">
+                            <h3 class="loading-text">Loading</h3>
+                        </div>
+
+                }
+            </div>
             <div className="row" style={{ marginBottom: '7rem' }}/>
         </div>
         
