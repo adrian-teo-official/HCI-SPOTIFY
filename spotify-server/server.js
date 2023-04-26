@@ -27,7 +27,8 @@ app.post("/refresh", (req, res) => {
       });
     })
     .catch((err) => {
-      res.sendStatus(400);
+      //console.log(err.message);
+      return res.sendStatus(400);
     });
 });
 
@@ -52,7 +53,7 @@ app.post("/login", (req, res) => {
       });
     })
     .catch((err) => {
-      res.sendStatus(400);
+      return res.sendStatus(400);
     });
 });
 
@@ -73,10 +74,11 @@ app.post("/search", (req, res) => {
   spotifyApi
     .searchTracks(searchContent)
     .then((data) => {
+      console.log(data);
       res.json(data.body.tracks.items);
     })
     .catch((err) => {
-      res.sendStatus(400);
+      return res.sendStatus(500);
     });
 });
 
@@ -99,8 +101,8 @@ app.post("/getMyTopTracks", (req, res) => {
       res.json(data.body.items);
     })
     .catch((err) => {
-      
-      res.sendStatus(400);
+      //console.log(err.message);
+      return res.sendStatus(400);
     });
 });
 
@@ -125,7 +127,7 @@ app.post("/getMyTopArtists", (req, res) => {
     })
     .catch((err) => {
     
-      res.sendStatus(400);
+      return res.sendStatus(400);
     });
 });
 
@@ -148,7 +150,8 @@ app.post("/getMyRecentlyPlay", (req, res) => {
       res.json(data.body.items);
     })
     .catch((err) => {
-      res.sendStatus(400);
+      console.log(err.message);
+      return res.sendStatus(400);
     });
 });
 
@@ -172,8 +175,8 @@ app.post("/getTracksAudioFeatures", (req, res) => {
       res.json(data.body.audio_features); // need change
     })
     .catch((err) => {
-      console.log(err); 
-      res.sendStatus(400);
+      //console.log(err); 
+      return res.sendStatus(400);
     });
 });
 
@@ -197,8 +200,8 @@ app.post("/getTrackAudioFeatures", (req, res) => {
       res.json(data.body);
     })
     .catch((err) => {
-      console.log(err); 
-      res.sendStatus(400);
+      // console.log(err); 
+      return res.sendStatus(400);
     });
 });
 
@@ -222,14 +225,12 @@ app.post("/getRecentlyArtists", (req, res) => {
       res.json(data.body.artists); // need change
     })
     .catch((err) => {
-      console.log(err); 
-      res.sendStatus(400);
+      //console.log(err); 
+      return res.sendStatus(400);
     });
 });
 
 app.post('/getRecommendations', (req, res) => {
-
-  console.log(req.body);
 
   const accessToken = req.body.accessToken;
 
@@ -268,8 +269,8 @@ app.post('/getRecommendations', (req, res) => {
       res.json(data.body);
     },
     function (err) {
-      console.error(err.message);
-      res.status(500).json({ error: "Failed to get recommendations" });
+      //console.error(err.message);
+      return res.status(500).json({ error: "Failed to get recommendations" });
     }
   );
 
