@@ -4,7 +4,7 @@
     height: 100vh;
     padding-top: 1rem;
     padding-bottom: 1rem;
-  }
+}
   
 .playlist-sidebar .list-group-item {
     cursor: pointer;
@@ -15,9 +15,9 @@
 }
 
 .playlist-sidebar .list-group-item:hover {
-background-color: #333;
-transform: scale(1.05);
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #333;
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .playlist-sidebar .list-group-item.active {
@@ -31,27 +31,27 @@ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     align-items: center;
     padding: 1rem;
     position: relative;
-  }
+}
   
-  .header-background {
+.header-background {
     position: absolute;
     left: 0;
     width: 101%;
-  }
+}
   
-  .top-background {
+.top-background {
     top: 0;
     height: 50%;
     background-image: linear-gradient(to bottom, #2d4b4f, #1e3436);
-  }
+}
   
-  .bottom-background {
+.bottom-background {
     bottom: 0;
     height: 50%;
     background-image: linear-gradient(to top,  #1e3436, #0c2e31);
-  }
+}
   
-  .playlist-details-header img {
+.playlist-details-header img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -61,19 +61,19 @@ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-right: 1rem;
     border: 3px solid #263e40; /* Border color matches the Spotify green color */
     box-shadow: 0 0 10px #1db954; /* Box shadow added to make the border shine */
-  }
+}
   
-  .playlist-details-header h2 {
+.playlist-details-header h2 {
     position: relative;
     z-index: 1;
     color: #fff; /* White text color for better visibility */
-  }
+}
   
-  .playlist-details-content {
+.playlist-details-content {
     border-top: 2px solid #0c2e31; /* Updated border color */
     padding-top: 1rem;
     width: 101%;
-  }
+}
   
   
   
