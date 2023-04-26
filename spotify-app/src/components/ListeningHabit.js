@@ -595,7 +595,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                     } 
                 </div>
 
-                <div className="col-md-6">
+                <div className="col-md-6" style={{overflow: "auto"}}>
                     <div className="Explaination chart-container" style={{
                             textAlign: 'start',
                             color: 'white',
@@ -605,10 +605,10 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                                 <div className="col-md-6">
                                     <div className="rectangle rectangle-1">
                                         Your current taste is 
-                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.acousticness)? ` ${(currentAvgRecentlyPlayedFeatures.acousticness).toFixed(2) * 100}% `: `N/A`}</span>
+                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.acousticness)? ` ${Math.round((currentAvgRecentlyPlayedFeatures.acousticness).toFixed(2) * 100)}% `: `N/A`}</span>
                                         acoustic.
                                         <br/>
-                                        &emsp; &emsp; Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.acousticness)? ` ${(currentAvgCombinationTrackFeatures.acousticness).toFixed(2) * 100}% `: `N/A`}</span>
+                                        &emsp;Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{(currentAvgCombinationTrackFeatures.acousticness)? ` ${Math.round((currentAvgCombinationTrackFeatures.acousticness).toFixed(2) * 100)}% `: `N/A`}</span>
                                         acoustic.
                                         {/* <br/>
                                         &emsp; <span style={{color: "orange", fontWeight:"bold"}}>{(currentAvgRecentlyPlayedFeatures.acousticness > currentAvgCombinationTrackFeatures.acousticness) 
@@ -619,10 +619,10 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                                 <div className="col-md-6">
                                     <div className="rectangle rectangle-2">
                                         Your current taste is 
-                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.danceability)? ` ${(currentAvgRecentlyPlayedFeatures.danceability).toFixed(2) * 100}% `: `N/A`}</span>
+                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.danceability)? ` ${Math.round((currentAvgRecentlyPlayedFeatures.danceability).toFixed(2) * 100)}% `: `N/A`}</span>
                                         danceable.
                                         <br/>
-                                        &emsp; &emsp; Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.danceability)? ` ${(currentAvgCombinationTrackFeatures.danceability).toFixed(2) * 100}% `: `N/A`}</span>
+                                        &emsp;Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.danceability)? ` ${Math.round((currentAvgCombinationTrackFeatures.danceability).toFixed(2) * 100)}% `: `N/A`}</span>
                                         danceable.
                                         <br/>
                                         {/* &emsp; <span style={{color: "orange", fontWeight:"bold"}}>{(currentAvgRecentlyPlayedFeatures.danceability > currentAvgCombinationTrackFeatures.danceability) 
@@ -633,23 +633,23 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                             </div>
                             <div className="row" style={{fontSize: "13px"}}>
                                 <div className="col-md-6">
-                                    <div className="rectangle rectangle-3">
+                                    <div className="rectangle rectangle-1">
                                         Your current taste is 
-                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.energy)? ` ${(currentAvgRecentlyPlayedFeatures.energy).toFixed(2) * 100}% `: `N/A`}</span>
+                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.energy)? ` ${Math.round((currentAvgRecentlyPlayedFeatures.energy).toFixed(2) * 100)}% `: `N/A`}</span>
                                         energetic.
                                         <br/>
-                                        &emsp; &emsp; Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.energy)? ` ${(currentAvgCombinationTrackFeatures.energy).toFixed(2) * 100}% `: `N/A`}</span>
+                                        &emsp;Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.energy)? ` ${Math.round((currentAvgCombinationTrackFeatures.energy).toFixed(2) * 100)}% `: `N/A`}</span>
                                         energetic.
                                         <br/>
                                     </div>
                                 </div>
                                 <div className="col-md-6">
-                                    <div className="rectangle rectangle-4">
+                                    <div className="rectangle rectangle-3">
                                         Your current taste is 
-                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.valence)? ` ${(currentAvgRecentlyPlayedFeatures.valence).toFixed(2) * 100}% `: `N/A`}</span>
+                                        <span style={{color: "pink", fontStyle: "italic"}}>{(currentAvgRecentlyPlayedFeatures.valence)? ` ${Math.round((currentAvgRecentlyPlayedFeatures.valence).toFixed(2) * 100)}% `: `N/A`}</span>
                                         positive.
                                         <br/>
-                                        &emsp; &emsp; Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.valence)? ` ${(currentAvgCombinationTrackFeatures.valence).toFixed(2) * 100}% `: `N/A`}</span>
+                                        &emsp;Your all time taste is <span style={{color: "skyblue", fontStyle: "italic"}}>{ (currentAvgCombinationTrackFeatures.valence)? ` ${Math.round((currentAvgCombinationTrackFeatures.valence).toFixed(2) * 100)}% `: `N/A`}</span>
                                         positive.
                                         <br/>
                                     </div>
@@ -657,7 +657,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                             </div>
                             <div className="row" style={{fontSize: "13px"}} >
                                 <div className="col-md-12">
-                                    <div className="rectangle rectangle-1">
+                                    <div className="rectangle rectangle-4">
                                        <span style={{color: "orange", fontWeight: "bold"}}>The Taste are calculated based on your recently play and the combination of your top played track in Spotify.</span>
                                     </div>
                                 </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { redirect} from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 
 function useAuthAgent(code) {
   const [accessToken, setAccessToken] = useState('');
@@ -8,6 +8,7 @@ function useAuthAgent(code) {
 
 
   useEffect(() => {
+    if(sessionStorage.getItem('access_token')) return;
     async function fetchLoginData() {
       try {
         const response = await fetch('http://localhost:8888/login', {
@@ -19,7 +20,6 @@ function useAuthAgent(code) {
         });
         const data = await response.json();
         setAccessToken(data.accessToken);
-        localStorage.setItem('access_token', data.accessToken);
         setRefreshToken(data.refreshToken);
         setExpiresIn(data.expiresIn);
         window.history.pushState({}, null, '/');
@@ -27,7 +27,6 @@ function useAuthAgent(code) {
         console.error(error);
       }
     }
-
     if (code) {
       fetchLoginData();
     }
@@ -49,9 +48,7 @@ function useAuthAgent(code) {
         });
         const data = await response.json();
         setAccessToken(data.accessToken);
-        localStorage.setItem('access_token', data.accessToken);
         setExpiresIn(data.expiresIn);
-        redirect('/');
         window.history.pushState({}, null, '/');
       } catch (error) {
         redirect('/');
@@ -60,7 +57,7 @@ function useAuthAgent(code) {
 
     const interval = setInterval(() => {
       fetchRefreshToken();
-    }, (expiresIn - 60) * 1000);
+    }, (expiresIn - 120) * 1000);
 
     return () => clearInterval(interval); // clearInterval makes sure the interval is cleared when the component unmounts;
   }, [refreshToken, expiresIn]);

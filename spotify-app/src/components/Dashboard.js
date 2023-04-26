@@ -10,6 +10,8 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
 
   useEffect(() => {
 
+    if(!accessToken) return;
+
     fetch("http://localhost:8888/getMyTopTracks", {
         method: "POST",
         headers: {

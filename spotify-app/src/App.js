@@ -8,6 +8,7 @@ import Player from './components/Player';
 import ListeningHabit from "./components/ListeningHabit";
 import {FiLogOut} from 'react-icons/fi';
 import "./components/Navbar.css";
+import Playlist from "./components/Playlist";
 
 import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 
@@ -17,24 +18,34 @@ const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
 
+
+
   console.log(code);
   let accessToken = null;
 
-  const Logout = (e)=>{
-    e.preventDefault();
-    localStorage.removeItem('code');
-    localStorage.removeItem('access_token');
+  const Logout = ()=>{
+    sessionStorage.removeItem('code');
+    sessionStorage.removeItem('access_token');
     accessToken = null;
     window.location.reload();
   };
 
 
   if(code) {
-    localStorage.setItem('code', code);
+    sessionStorage.setItem('code', code);
   }
 
-  if(localStorage.getItem('code')){
-    accessToken = AuthAgent(localStorage.getItem('code')) || localStorage.getItem('access_token'); // Auth Agent may return null while refresh so need additional handle
+  if(sessionStorage.getItem('code')){
+    let tempCode = AuthAgent(sessionStorage.getItem('code'));
+    if(tempCode)
+    {
+      accessToken = tempCode;
+      sessionStorage.setItem('access_token', tempCode);
+    }
+    else{
+      accessToken = sessionStorage.getItem('access_token');
+    }
+    console.log(accessToken);
   }
 
   const [playingTrack, setPlayingTrack] = useState();
@@ -49,7 +60,7 @@ function App() {
   
 
   return (
-    (localStorage.getItem('code')) ? 
+    (sessionStorage.getItem('code')) ? 
       <div className="App container">
         <Router>
           <nav className="navbar navbar-expand-lg text-white border border-3 mb-2">
@@ -72,6 +83,9 @@ function App() {
                     <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Home' ? 'active-link' : 'text-white'}`} to="/" onClick={() => setActiveLink('Home')}> Home </Link>
                   </li>
                   <li className="nav-item active">
+                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Playlist' ? 'active-link' : 'text-white'}`} to="/Playlist" onClick={() => setActiveLink('Playlist')}> Playlist </Link>
+                  </li>
+                  <li className="nav-item active">
                     <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Explore' ? 'active-link' : 'text-white'}`} to="/Explore" onClick={() => setActiveLink('Explore')}> Explore </Link>
                   </li>
                   <li className="nav-item active">
@@ -80,6 +94,7 @@ function App() {
                   <li className="nav-item active">
                     <Link className={`nav-link fs-4 text-wrap ${activeLink === 'About' ? 'active-link' : 'text-white'}`} to="/About" onClick={() => setActiveLink('About')}> About </Link>
                   </li>
+    
                 </ul>
                 <div className="nav-item active ms-auto d-flex align-items-center">
                     <button className="btn" onClick={Logout} style={{ fontSize: "30px", color: "white", marginBottom: "7px", border: "none", outline: "none", boxShadow: "none" }}> 
@@ -96,6 +111,11 @@ function App() {
           <Routes>
 
             <Route
+              path="/Playlist"
+              element={<Playlist></Playlist>}
+            />
+
+            <Route
               path="/Listening-Habit"
               element={<ListeningHabit accessToken={accessToken} ChooseTrack = {chooseTrack}></ListeningHabit>}
             />
@@ -109,7 +129,6 @@ function App() {
               path="/"
               element={<Dashboard accessToken={accessToken} ChooseTrack = {chooseTrack}></Dashboard>}
             />
-
 
           </Routes>
         </Router>

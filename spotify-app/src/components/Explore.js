@@ -79,11 +79,11 @@ const Explore = ({accessToken, ChooseTrack}) => {
           <div className="row mb-3">
             {
 
-              ( finishFetch && search.length > 0 && searchResults.length > 0) ? 
+              ( finishFetch && searchResults && search.length > 0 && searchResults.length > 0) ? 
               <div className="jumbotron jumbotron-fluid mx-auto w-50">
                 <h2 className="display-8 text-white">Search Result</h2>
               </div> 
-              : ( finishFetch && search.length > 0 && searchResults.length === 0 ) ? 
+              : ( finishFetch && searchResults && search.length > 0 && searchResults.length === 0 ) ? 
               <div className="jumbotron jumbotron-fluid mx-auto w-50">
                 <h2 className="display-8 text-warning">No Result Found!</h2>
               </div> : <div></div>
@@ -97,7 +97,7 @@ const Explore = ({accessToken, ChooseTrack}) => {
                 searchResults.map((track) => {
     
                     return (
-                    <TrackCard Track = {track} key={track.uri} ChooseTrack = {ChooseTrack}></TrackCard>
+                    <TrackCard  accessToken= {accessToken} Track = {track} key={track.uri} ChooseTrack = {ChooseTrack}></TrackCard>
                     )})
                     
             }
