@@ -276,4 +276,53 @@ app.post('/getRecommendations', (req, res) => {
 
 });
 
+// app.post("/getMyPlaylist", (req, res) => {
+//   const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+
+//   const credentials = {
+//     clientId: "ee859872f4354d5093bba8275dd2ace1",
+//     clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+//     redirectUri: "http://localhost:3000",
+//   };
+
+//   const spotifyApi = new spotifyWebApi(credentials);
+
+//   spotifyApi.setAccessToken(accessToken);
+
+//   spotifyApi
+//     .getUserPlaylists()
+//     .then((data) => {
+//       res.json(data.body.items); // need change
+//     })
+//     .catch((err) => {
+//       //console.log(err); 
+//       return res.sendStatus(400);
+//     });
+// });
+
+app.post("/getPlaylist", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const playlistId = req.body.playlistId;
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getPlaylist(playlistId)
+    .then((data) => {
+      res.json(data.body); // need change
+    })
+    .catch((err) => {
+      console.log(err.message); 
+      return res.sendStatus(400);
+    });
+});
+
 app.listen(8888);
