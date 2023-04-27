@@ -317,7 +317,7 @@ app.post("/getPlaylist", (req, res) => {
   spotifyApi
     .getPlaylist(playlistId)
     .then((data) => {
-      res.json(data.body); // need change
+      res.json(data.body.tracks); // need change
     })
     .catch((err) => {
       console.log(err.message); 

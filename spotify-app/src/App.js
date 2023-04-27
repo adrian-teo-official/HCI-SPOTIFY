@@ -36,16 +36,7 @@ function App() {
   }
 
   if(sessionStorage.getItem('code')){
-    let tempCode = AuthAgent(sessionStorage.getItem('code'));
-    if(tempCode)
-    {
-      accessToken = tempCode;
-      sessionStorage.setItem('access_token', tempCode);
-    }
-    else{
-      accessToken = sessionStorage.getItem('access_token');
-    }
-    console.log(accessToken);
+    accessToken = AuthAgent(sessionStorage.getItem('code'));
   }
 
   const [playingTrack, setPlayingTrack] = useState();

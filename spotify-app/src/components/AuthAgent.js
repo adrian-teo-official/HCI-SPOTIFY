@@ -2,13 +2,30 @@ import { useState, useEffect } from 'react';
 import { redirect } from 'react-router-dom';
 
 function useAuthAgent(code) {
-  const [accessToken, setAccessToken] = useState('');
-  const [refreshToken, setRefreshToken] = useState('');
-  const [expiresIn, setExpiresIn] = useState('');
-
+  const [accessToken, setAccessToken] = useState(sessionStorage.getItem('access_token') || '');
+  const [refreshToken, setRefreshToken] = useState(sessionStorage.getItem('refresh_token') || '');
+  const [expiresIn, setExpiresIn] = useState(sessionStorage.getItem('expires_in') || '');
 
   useEffect(() => {
-    if(sessionStorage.getItem('access_token')) return;
+    if (accessToken) {
+      sessionStorage.setItem('access_token', accessToken);
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
+    if (refreshToken) {
+      sessionStorage.setItem('refresh_token', refreshToken);
+    }
+  }, [refreshToken]);
+
+  useEffect(() => {
+    if (expiresIn) {
+      sessionStorage.setItem('expires_in', expiresIn);
+    }
+  }, [expiresIn]);
+
+  useEffect(() => {
+    if(accessToken) return;
     async function fetchLoginData() {
       try {
         const response = await fetch('http://localhost:8888/login', {

@@ -86,13 +86,6 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
                                 </div>
                                 <div className="playlist-details-content">
                                     <PlaylistTrack accessToken={accessToken} playlistId={currentPlaylist.id} ChooseTrack={ChooseTrack} ></PlaylistTrack>
-                                    {/* <div className="row row-cols-1 row-cols-md-2 g-4">  
-                                    {currentPlaylist.map((track, index) => (
-                                    <div key={index} className="col">
-                                        <TrackCard accessToken={accessToken} Track={track} ChooseTrack={ChooseTrack}></TrackCard>
-                                    </div>
-                                    ))}
-                                    </div> */}
                                 </div>
                             </div>
                         ) : (<div></div>)
