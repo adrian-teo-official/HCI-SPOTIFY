@@ -420,13 +420,13 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
     const pieRef = useRef(null);
 
     // Process trackData to calculate track counts per year
-    const releaseYearCountsDecade = topTrackIds.reduce((acc, track) => {
+    const releaseYearCountsDecade = (topTrackIds)? topTrackIds.reduce((acc, track) => {
         const releaseYear = new Date(track.releaseDate).getFullYear();
         const decadeStart = Math.floor(releaseYear / 10) * 10; // Calculate the starting year of the decade
 
         acc[decadeStart] = (acc[decadeStart] || 0) + 1;
         return acc;
-    }, []);
+    }, []) : null;
 
     useEffect(() => {
 
@@ -873,8 +873,8 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                 {
                     (recomandationFinishFetch) ?
                         recommendationsTracks.map((track) => <TrackCard accessToken={accessToken} Track={track} ChooseTrack={ChooseTrack}></TrackCard> )  
-                        : <div class="loading-container d-flex justify-content-center align-items-start">
-                            <h3 class="loading-text">Loading</h3>
+                        : <div className="loading-container d-flex justify-content-center align-items-start">
+                            <h3 className="loading-text">Loading</h3>
                         </div>
 
                 }

@@ -112,7 +112,7 @@ function App() {
 
             <Route
               path="/Playlist"
-              element={<Playlist></Playlist>}
+              element={<Playlist accessToken={accessToken} ChooseTrack = {chooseTrack}></Playlist>}
             />
 
             <Route

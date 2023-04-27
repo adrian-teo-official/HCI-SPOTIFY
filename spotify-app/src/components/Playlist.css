@@ -54,7 +54,7 @@
 .playlist-details-header img {
     width: 150px;
     height: 150px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     object-fit: cover;
     position: relative;
     z-index: 1;
