@@ -1,37 +1,9 @@
 // src/components/PlaylistPage.js
 import React, { useEffect, useState } from 'react';
 import "./Playlist.css";
-import TrackCard from './TrackCard';
+import PlaylistTrack from "./PlaylistTrack";
 
 const PlaylistPage = ({accessToken, ChooseTrack}) => {
-  // Replace the array with your actual playlist data
-    // const playlists = [
-    // {
-    //     name: 'Playlist 1',
-    //     songs: [
-    //     {
-    //         title: 'Song 1',
-    //         artist: 'Artist 1',
-    //         album: 'Album 1',
-    //     },
-    //     {
-    //         title: 'Song 2',
-    //         artist: 'Artist 2',
-    //         album: 'Album 2',
-    //     },
-    //     ],
-    // },
-    // {
-    //     name: 'Playlist 2',
-    //     songs: [
-    //     {
-    //         title: 'Song 3',
-    //         artist: 'Artist 3',
-    //         album: 'Album 3',
-    //     },
-    //     ],
-    // },
-    // ];
 
     const [userPlaylist, setUserPlaylist] = useState([]);
     const [activePlaylist, setActivePlaylist] = useState(0);
@@ -41,36 +13,41 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
         if (!accessToken) return;
 
         fetch("http://localhost:8888/getMyPlaylist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          accessToken: accessToken
-        }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        setUserPlaylist(
-            data.map((playlist) => {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+            accessToken: accessToken,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            setUserPlaylist(
+                data.map((playlist, index) => {
 
-                // const smallestPlaylistImage = playlist.images.reduce((smallest, image) => {
-                //     return image.height === Math.min(playlist.images.map(image => image.height))? image : smallest;
-                //     }, playlist.images[0]
-                // )
+                    let smallestPlaylistImage = {url: 'https://via.placeholder.com/150x150/181818/ffffff?text=Spotify'};
+
+                    if(playlist.images[0]) {
+
+                        smallestPlaylistImage = playlist.images.reduce((smallest, image) => {
+                            return image.height === Math.min(playlist.images.map(image => image.height))? image : smallest;
+                            }, playlist.images[0]
+                        )
+                    }
 
 
-                return {
-                    id: playlist.id,
-                    name: playlist.name,
-                    uri: playlist.uri,
-                    image: playlist.images[0].url
-                }
-            })
+                    return {
+                        id: playlist.id,
+                        name: playlist.name,
+                        uri: playlist.uri,
+                        image: smallestPlaylistImage.url
+                    }
+                })
 
-        );
-      })
-
+            );
+        })
     }, [accessToken])
 
     const onPlaylistClick = (index) => {
@@ -104,17 +81,18 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
                                 <div className="playlist-details-header">
                                     <div className="header-background top-background"></div>
                                     <div className="header-background bottom-background"></div>
-                                    <img src={currentPlaylist.smallestPlaylistImage} alt="Playlist" />
+                                    <img src={currentPlaylist.image} alt="Playlist" />
                                     <h2>{currentPlaylist.name}</h2>
                                 </div>
                                 <div className="playlist-details-content">
-                                    <div className="row row-cols-1 row-cols-md-2 g-4">  
-                                    {/* {currentPlaylist.map((track, index) => (
+                                    <PlaylistTrack accessToken={accessToken} playlistId={currentPlaylist.id} ChooseTrack={ChooseTrack} ></PlaylistTrack>
+                                    {/* <div className="row row-cols-1 row-cols-md-2 g-4">  
+                                    {currentPlaylist.map((track, index) => (
                                     <div key={index} className="col">
                                         <TrackCard accessToken={accessToken} Track={track} ChooseTrack={ChooseTrack}></TrackCard>
                                     </div>
-                                    ))} */}
-                                    </div>
+                                    ))}
+                                    </div> */}
                                 </div>
                             </div>
                         ) : (<div></div>)
