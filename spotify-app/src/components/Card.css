@@ -1,0 +1,62 @@
+/**Card**/
+.card-container {
+    overflow: hidden;
+    position: relative;
+    perspective: 1000px;
+    transition: transform 0.3s;
+}
+  
+.card-container:hover {
+    transform: translateY(-10px);
+}
+  
+.card {
+    position: relative;
+}
+  
+.card-body {
+    position: absolute;
+    bottom: 0%;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: height 0.5s;
+    z-index: 1;
+    text-align: left;
+}
+  
+.card-container:hover .card-body {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+  
+.features {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.card-container:hover .card-body .features {
+    display: block;
+    opacity: 1;
+}
+
+.features-title {
+    font-weight: bold;
+    font-size: 15px;
+}
+  
+.features-list {
+    list-style:square;
+    padding-left: 1.5rem;
+}
+  
+.features-list li {
+    padding-bottom: 0.25rem;
+}
+
+.small-p {
+    font-size: 12px;
+}
+  

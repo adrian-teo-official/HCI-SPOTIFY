@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { FiPlayCircle } from 'react-icons/fi';
+import "./Card.css";
 
 function TrackCard({ accessToken, Track, ChooseTrack}) {
 

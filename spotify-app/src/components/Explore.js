@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import TrackCard from "./TrackCard";
+import "./Explore.css"
 
 const Explore = ({accessToken, ChooseTrack}) => {
 

@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import TrackCard from "./TrackCard";
+import ArtistCard from "./ArtistCard";
 
 const Dashboard = ({ accessToken, ChooseTrack}) => {
 
@@ -146,17 +147,9 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
       </div>
       <div className="row">
         {
-          (finishFetch)? myTopArtists.slice(0,6).map((artists, index)=>{
+          (finishFetch)? myTopArtists.slice(0,6).map((artist, index)=>{
             return (
-              <div className="col-2 card-container" key={index} style={{ cursor: "pointer" }}>
-                <div className="card bg-dark">
-                  <img src = {`${artists.image}`} className="card-img-top" alt="Card image cap" />
-                  <div className="card-body text-white">
-                    <h6 className="card-title text-truncate">{`${artists.name}`}</h6>
-                    <p className="card-text text-truncate small-p">{`Genres: ${artists.genres}`}</p>
-                  </div>
-                </div>
-              </div>
+              <ArtistCard Artist={artist} Key={index}></ArtistCard>
             )
           }) : <h5 className="text text-info text-center">Loading....</h5>
         }

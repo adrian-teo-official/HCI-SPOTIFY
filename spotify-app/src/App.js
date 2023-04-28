@@ -9,6 +9,7 @@ import ListeningHabit from "./components/ListeningHabit";
 import {FiLogOut} from 'react-icons/fi';
 import "./components/Navbar.css";
 import Playlist from "./components/Playlist";
+import Artist from "./components/Artist";
 
 import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 
@@ -17,8 +18,6 @@ const code = new URLSearchParams(window.location.search).get('code');
 
 
 function App() {
-
-
 
   console.log(code);
   let accessToken = null;
@@ -119,6 +118,11 @@ function App() {
             <Route
               path="/"
               element={<Dashboard accessToken={accessToken} ChooseTrack = {chooseTrack}></Dashboard>}
+            />
+
+            <Route
+              path="/Artist"
+              element = {<Artist></Artist>}
             />
 
           </Routes>

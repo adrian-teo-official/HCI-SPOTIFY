@@ -2,11 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import "./Playlist.css";
 import PlaylistTrack from "./PlaylistTrack";
+import { IoPlaySharp } from 'react-icons/io5';
+
 
 const PlaylistPage = ({accessToken, ChooseTrack}) => {
 
     const [userPlaylist, setUserPlaylist] = useState([]);
     const [activePlaylist, setActivePlaylist] = useState(0);
+
+    const [disableButton, setDisableButton] = useState(true);
+
 
     useEffect(() => {
 
@@ -42,19 +47,45 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
                         id: playlist.id,
                         name: playlist.name,
                         uri: playlist.uri,
-                        image: smallestPlaylistImage.url
+                        image: smallestPlaylistImage.url,
+                        trackAmount: playlist.tracks.total
                     }
                 })
 
             );
+
         })
     }, [accessToken])
+
 
     const onPlaylistClick = (index) => {
         setActivePlaylist(index);
     };
 
     const currentPlaylist = (userPlaylist)? userPlaylist[activePlaylist] : null;
+
+    useEffect(() => {
+        if(!currentPlaylist) return;
+        console.log(userPlaylist.trackAmount);
+
+        if(currentPlaylist.trackAmount > 0) {
+            setDisableButton(false);
+        }
+
+    },[currentPlaylist])
+
+    const PlayPlaylist = (e, playlist) => {
+        if(disableButton)
+        {
+            e.preventDefault();
+            return;
+        }
+        else {
+            ChooseTrack(playlist);
+        }
+    }
+
+
 
     return (
         <div className="container-fluid">
@@ -82,7 +113,13 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
                                     <div className="header-background top-background"></div>
                                     <div className="header-background bottom-background"></div>
                                     <img src={currentPlaylist.image} alt="Playlist" />
-                                    <h2>{currentPlaylist.name}</h2>
+                                    <div className="d-flex align-items-center justify-content-between w-100">
+                                        <h2>{currentPlaylist.name}</h2>
+                                        <button type="button" className="btn playlist-play-button" onClick={(e) => PlayPlaylist(e, currentPlaylist)} style={{ zIndex: "1" }} disabled = {disableButton}>
+                                            <IoPlaySharp/>
+                                            <span>Play</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="playlist-details-content">
                                     <PlaylistTrack accessToken={accessToken} playlistId={currentPlaylist.id} ChooseTrack={ChooseTrack} ></PlaylistTrack>

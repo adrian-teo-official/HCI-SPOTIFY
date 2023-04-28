@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Chart from 'chart.js/auto';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import TrackCard from "./TrackCard";
+import "./ListeningHabit.css";
 
 const ListeningHabit = ({accessToken, ChooseTrack}) =>{
 
