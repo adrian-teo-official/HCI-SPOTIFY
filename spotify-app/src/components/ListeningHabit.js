@@ -45,7 +45,8 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                accessToken: accessToken
+                accessToken: accessToken,
+                limit: 50
             }),
         })
         .then(response => response.json())
@@ -75,7 +76,8 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                accessToken: accessToken
+                accessToken: accessToken,
+                limit: 50
             }),
         })
         .then(response => response.json())
@@ -108,7 +110,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             "Content-Type": "application/json",
             },
             body: JSON.stringify({
-            accessToken: accessToken
+                accessToken: accessToken
             }),
         })
         .then(response => response.json())

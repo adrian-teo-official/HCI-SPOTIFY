@@ -10,7 +10,7 @@ function ArtistCard ({Artist, Key}) {
     };
 
     return (
-        <div className="col-sm-2 card-container" key={Key} style={{ cursor: "pointer" }} onClick={(e) => {e.preventDefault(); handleClick(Artist.id);}}>
+        <div className="col-sm-2 card-container mb-4" key={Key} style={{ cursor: "pointer" }} onClick={(e) => {e.preventDefault(); handleClick(Artist.id);}}>
                 <div className="card bg-dark">
                   <img src = {`${Artist.image}`} className="card-img-top" alt="Card image cap" />
                   <div className="card-body text-white">

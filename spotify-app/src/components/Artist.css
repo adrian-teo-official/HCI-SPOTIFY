@@ -1,0 +1,79 @@
+.artistProfile {
+    color: #fff;
+    background-image: linear-gradient(to bottom, rgba(32, 43, 45, 0), rgba(7, 43, 50, 0.399) 90%);
+}
+  .artistProfileInfo {
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 2rem;
+    border-width: 1.5px 0; /* Change '2px' to your desired border width */
+    border-style: solid;
+    border-color: #ffffff;  
+  }
+  
+  .artistProfileImage {
+    text-align: right;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    /* background-color: #fff; */
+    
+  }
+  
+  .artistProfileImage img {
+    border-radius: 0.5rem;
+    /* max-width: 100%; */
+    width: 200px;
+    height: 200px;
+  }
+  
+  .artistProfileDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .artistProfileDetails h2 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .artistProfileDetails p {
+    margin-bottom: 0.25rem;
+  }
+  
+  .header {
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .backButton {
+    background-color: transparent;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 2rem; /* increased font-size */
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    padding: 0.25rem;
+    width: 48px; /* increased width */
+    height: 48px; /* increased height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+  }
+  
+  
+  .backButton:hover {
+    color: #1ed760;
+    box-shadow: 0 0 12px #1ed760;
+    border: 2px solid #107734;
+  }
+
+.customMarginBottom {
+    margin-bottom: 1.5rem!important;
+}
+  

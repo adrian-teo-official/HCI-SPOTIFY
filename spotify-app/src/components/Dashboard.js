@@ -13,7 +13,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
 
     if(!accessToken) return;
 
-    fetch("http://localhost:8888/getMyTopTracks", {
+      fetch("http://localhost:8888/getMyTopTracks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +44,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
         );
       })
 
-    fetch("http://localhost:8888/getMyTopArtists", {
+      fetch("http://localhost:8888/getMyTopArtists", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,7 +119,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
       </div>
       <div className="row">
         {
-          (finishFetch)? myRecentlyPlay.slice(0,6).map((tracks, index)=>{
+          (finishFetch)? myRecentlyPlay.slice(0,12).map((tracks, index)=>{
             return (
               <TrackCard accessToken={accessToken} Track={tracks} ChooseTrack={ChooseTrack}/>
             )
@@ -133,7 +133,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
       </div>
       <div className="row">
         {
-          (finishFetch)? myTopTracks.slice(0,6).map((tracks, index)=>{
+          (finishFetch)? myTopTracks.slice(0,12).map((tracks, index)=>{
             return (
               <TrackCard accessToken={accessToken} Track={tracks} ChooseTrack={ChooseTrack}/>
             )
@@ -147,14 +147,14 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
       </div>
       <div className="row">
         {
-          (finishFetch)? myTopArtists.slice(0,6).map((artist, index)=>{
+          (finishFetch)? myTopArtists.slice(0,12).map((artist, index)=>{
             return (
               <ArtistCard Artist={artist} Key={index}></ArtistCard>
             )
           }) : <h5 className="text text-info text-center">Loading....</h5>
         }
       </div>
-      <div className="row" style={{ marginBottom: '7rem' }}/>
+      <div className="row" style={{ marginBottom: '6rem' }}/>
     </div>
 
   );

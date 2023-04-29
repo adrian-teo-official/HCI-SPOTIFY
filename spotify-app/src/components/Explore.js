@@ -50,8 +50,7 @@ const Explore = ({accessToken, ChooseTrack}) => {
             })
           );
           setFinishFetch(true);
-        })
-  
+        })  
             
       }, [search, accessToken]);
     
@@ -93,14 +92,12 @@ const Explore = ({accessToken, ChooseTrack}) => {
             
           </div>
     
-          <div className="row" style={{ marginBottom: '6rem' }} >
+          <div className="row row-cols-1 row-cols-md-5" style={{marginBottom: "6rem"}}>
             {
                 searchResults.map((track) => {
-    
                     return (
-                    <TrackCard  accessToken= {accessToken} Track = {track} key={track.uri} ChooseTrack = {ChooseTrack}></TrackCard>
-                    )})
-                    
+                      <TrackCard  accessToken= {accessToken} Track = {track} key={track.uri} ChooseTrack = {ChooseTrack}></TrackCard>
+                    )})  
             }
           </div>
             

@@ -84,6 +84,7 @@ app.post("/search", (req, res) => {
 
 app.post("/getMyTopTracks", (req, res) => {
   const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const limit = (req.body.limit) ? req.body.limit : 20;
 
   const credentials = {
     clientId: "ee859872f4354d5093bba8275dd2ace1",
@@ -96,7 +97,7 @@ app.post("/getMyTopTracks", (req, res) => {
   spotifyApi.setAccessToken(accessToken);
 
   spotifyApi
-    .getMyTopTracks()
+    .getMyTopTracks({limit: limit})
     .then((data) => {
       res.json(data.body.items);
     })
@@ -109,6 +110,7 @@ app.post("/getMyTopTracks", (req, res) => {
 
 app.post("/getMyTopArtists", (req, res) => {
   const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const limit = (req.body.limit) ? req.body.limit : 20;
 
   const credentials = {
     clientId: "ee859872f4354d5093bba8275dd2ace1",
@@ -121,7 +123,7 @@ app.post("/getMyTopArtists", (req, res) => {
   spotifyApi.setAccessToken(accessToken);
 
   spotifyApi
-    .getMyTopArtists()
+    .getMyTopArtists({limit:limit})
     .then((data) => {
       res.json(data.body.items);
     })
@@ -133,6 +135,7 @@ app.post("/getMyTopArtists", (req, res) => {
 
 app.post("/getMyRecentlyPlay", (req, res) => {
   const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const limit = (req.body.limit) ? req.body.limit : 20;
 
   const credentials = {
     clientId: "ee859872f4354d5093bba8275dd2ace1",
@@ -145,7 +148,7 @@ app.post("/getMyRecentlyPlay", (req, res) => {
   spotifyApi.setAccessToken(accessToken);
 
   spotifyApi
-    .getMyRecentlyPlayedTracks()
+    .getMyRecentlyPlayedTracks({limit: limit})
     .then((data) => {
       res.json(data.body.items);
     })
@@ -324,5 +327,134 @@ app.post("/getPlaylist", (req, res) => {
       return res.sendStatus(400);
     });
 });
+
+app.post("/getArtist", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const artistId = req.body.artistId;
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getArtist(artistId)
+    .then((data) => {
+      res.json(data.body); // need change
+    })
+    .catch((err) => {
+      console.log(err.message); 
+      return res.sendStatus(400);
+    });
+});
+
+app.post("/getArtistTopTracks", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const artistId = req.body.artistId;
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getArtistTopTracks(artistId, "AU")
+    .then((data) => {
+      res.json(data.body); // need change
+    })
+    .catch((err) => {
+      console.log(err.message); 
+      return res.sendStatus(400);
+    });
+});
+
+app.post("/getAlbums", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const artistId = req.body.artistId;
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getArtistAlbums(artistId, { limit: 10 }) // Adjust the limit if you want more albums
+    .then((data) => {
+      res.json(data.body);
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return res.sendStatus(400);
+    });
+
+});
+
+app.post("/getAlbumTrack", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const albumId = req.body.albumId;
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getAlbumTracks(albumId, { limit: 10 }) // Adjust the limit if you want more albums
+    .then((data) => {
+      res.json(data.body);
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return res.sendStatus(400);
+    });
+
+});
+
+app.post("/getTracks", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+  const trackIds = req.body.trackIds;
+  console.log(trackIds);
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getTracks(trackIds)
+    .then((data) => {
+      res.json(data.body);
+    })
+    .catch((err) => {
+      console.log(err.message);
+      return res.sendStatus(400);
+    });
+
+});
+
 
 app.listen(8888);

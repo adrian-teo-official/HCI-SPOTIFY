@@ -1,4 +1,3 @@
-// src/components/PlaylistPage.js
 import React, { useEffect, useState } from 'react';
 import "./Playlist.css";
 import PlaylistTrack from "./PlaylistTrack";
@@ -71,6 +70,9 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
         if(currentPlaylist.trackAmount > 0) {
             setDisableButton(false);
         }
+        else {
+            setDisableButton(true);
+        }
 
     },[currentPlaylist])
 
@@ -115,6 +117,7 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
                                     <img src={currentPlaylist.image} alt="Playlist" />
                                     <div className="d-flex align-items-center justify-content-between w-100">
                                         <h2>{currentPlaylist.name}</h2>
+
                                         <button type="button" className="btn playlist-play-button" onClick={(e) => PlayPlaylist(e, currentPlaylist)} style={{ zIndex: "1" }} disabled = {disableButton}>
                                             <IoPlaySharp/>
                                             <span>Play</span>

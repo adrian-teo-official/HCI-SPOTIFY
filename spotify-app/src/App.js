@@ -19,7 +19,6 @@ const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
 
-  console.log(code);
   let accessToken = null;
 
   const Logout = ()=>{
@@ -122,7 +121,7 @@ function App() {
 
             <Route
               path="/Artist"
-              element = {<Artist></Artist>}
+              element = {<Artist accessToken={accessToken} ChooseTrack = {chooseTrack}></Artist>}
             />
 
           </Routes>
