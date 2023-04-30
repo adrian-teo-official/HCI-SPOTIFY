@@ -1,31 +1,33 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import "./Card.css";
 
-function TrackCard({ accessToken, Track, ChooseTrack}) {
+function TrackCard({ accessToken, Track, TrackFeatures, ChooseTrack}) {
 
-    const [trackFeatures, setTrackFeatures] = useState([]);
+    // const [trackFeatures, setTrackFeatures] = useState([]);
 
-    useEffect (()=>{
-        fetch("http://localhost:8888/getTrackAudioFeatures", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    accessToken: accessToken,
-                    trackId: Track.id
-                }),
-            })
-            .then(response => response.json())
-            .then(data =>{
-                setTrackFeatures({
-                    acousticness: data.acousticness,
-                    danceability: data.danceability,
-                    energy: data.energy,
-                    valence: data.valence
-                })
-            });
-    },[accessToken])
+    // useEffect (()=>{
+    //     if(accessToken && Track) {
+    //         fetch("http://localhost:8888/getTrackAudioFeatures", {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                 },
+    //                 body: JSON.stringify({
+    //                     accessToken: accessToken,
+    //                     trackId: Track.id
+    //                 }),
+    //             })
+    //             .then(response => response.json())
+    //             .then(data =>{
+    //                 setTrackFeatures({
+    //                     acousticness: data.acousticness,
+    //                     danceability: data.danceability,
+    //                     energy: data.energy,
+    //                     valence: data.valence
+    //                 })
+    //             });
+    //         }
+    // },[accessToken])
 
     const playHandler = () => {
         ChooseTrack(Track);
@@ -50,10 +52,10 @@ function TrackCard({ accessToken, Track, ChooseTrack}) {
                     <div className="features hidden">
                         <span className="features-title mt-1 mb-1">Features:</span>
                         <ul className="features-list text-truncate small-p">
-                            <li>{`Acousticness: ${(trackFeatures.acousticness)? Math.round(trackFeatures.acousticness.toFixed(2) * 100) : 'N/A'}%`}</li>
-                            <li>{`Danceability: ${(trackFeatures.danceability)? Math.round(trackFeatures.danceability.toFixed(2) * 100) : 'N/A'}%`}</li>
-                            <li>{`Energy: ${(trackFeatures.energy)? Math.round(trackFeatures.energy.toFixed(2) * 100) : 'N/A'}%`}</li>
-                            <li>{`Valence: ${(trackFeatures.valence)? Math.round(trackFeatures.valence.toFixed(2) * 100) : 'N/A'}%`}</li>
+                            <li>{`Acousticness: ${(TrackFeatures?.acousticness)? Math.round(TrackFeatures.acousticness.toFixed(2) * 100) : 'N/A'}%`}</li>
+                            <li>{`Danceability: ${(TrackFeatures?.danceability)? Math.round(TrackFeatures.danceability.toFixed(2) * 100) : 'N/A'}%`}</li>
+                            <li>{`Energy: ${(TrackFeatures?.energy)? Math.round(TrackFeatures.energy.toFixed(2) * 100) : 'N/A'}%`}</li>
+                            <li>{`Valence: ${(TrackFeatures?.valence)? Math.round(TrackFeatures.valence.toFixed(2) * 100) : 'N/A'}%`}</li>
                         </ul>
                     </div>
                 </div>

@@ -6,7 +6,10 @@ const Explore = ({accessToken, ChooseTrack}) => {
 
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-    const [finishFetch, setFinishFetch] = useState(false);
+    const [searchResultsFinishFetch, setSearchResultsFinishFetch] = useState(false);
+
+    const [resultsTrackFeatures, setResultsTrackFeatures] = useState([]);
+    const [resultsTrackFeaturesFinishFetch, setResultsTrackFeaturesFinishFetch] = useState(false);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -49,10 +52,41 @@ const Explore = ({accessToken, ChooseTrack}) => {
               };
             })
           );
-          setFinishFetch(true);
+          setSearchResultsFinishFetch(true);
         })  
             
-      }, [search, accessToken]);
+    }, [search, accessToken]);
+
+    useEffect(() => {
+
+      if(!searchResultsFinishFetch) return;
+
+      fetch("http://localhost:8888/getTracksAudioFeatures", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            accessToken: accessToken,
+            trackIds: searchResults.map((track) => track.id)
+        })
+      })
+      .then(response => response.json())
+      .then(data =>{
+          setResultsTrackFeatures(
+              data.map((tracksFeatures) => {
+                  return {
+                      acousticness: tracksFeatures.acousticness,
+                      danceability: tracksFeatures.danceability,
+                      energy: tracksFeatures.energy,
+                      valence: tracksFeatures.valence
+                  }
+              })
+          );
+          setResultsTrackFeaturesFinishFetch(true);
+      });
+
+    },[accessToken, searchResultsFinishFetch])
     
       return (
         <div className="Container">
@@ -79,11 +113,11 @@ const Explore = ({accessToken, ChooseTrack}) => {
           <div className="row mb-3">
             {
 
-              ( finishFetch && searchResults && search.length > 0 && searchResults.length > 0) ? 
+              ( searchResultsFinishFetch && searchResults && search.length > 0 && searchResults.length > 0) ? 
               <div className="jumbotron jumbotron-fluid mx-auto w-50">
                 <h2 className="display-8 text-white">Search Result</h2>
               </div> 
-              : ( finishFetch && searchResults && search.length > 0 && searchResults.length === 0 ) ? 
+              : ( searchResultsFinishFetch && searchResults && search.length > 0 && searchResults.length === 0 ) ? 
               <div className="jumbotron jumbotron-fluid mx-auto w-50">
                 <h2 className="display-8 text-warning">No Result Found!</h2>
               </div> : <div></div>
@@ -92,14 +126,17 @@ const Explore = ({accessToken, ChooseTrack}) => {
             
           </div>
     
-          <div className="row row-cols-1 row-cols-md-5" style={{marginBottom: "6rem"}}>
-            {
-                searchResults.map((track) => {
-                    return (
-                      <TrackCard  accessToken= {accessToken} Track = {track} key={track.uri} ChooseTrack = {ChooseTrack}></TrackCard>
-                    )})  
-            }
+          <div className="row row-cols-1 row-cols-md-6 " style={{ marginBottom: '6rem'}}>
+          {
+            (searchResults[0] && resultsTrackFeaturesFinishFetch) ?
+            searchResults.map((track,index) => {
+              return (
+                <TrackCard accessToken={accessToken} Track={track} key={track.uri} TrackFeatures={resultsTrackFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
+              )
+            }) : null
+          }
           </div>
+
             
         </div>
       );

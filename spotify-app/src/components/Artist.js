@@ -12,8 +12,16 @@ function Artist ({accessToken, ChooseTrack}) {
     const [artistAlbumsTracksIds, setArtistAlbumsTracksIds] = useState([]);
     const [albumsTracks, setAlbumsTracks] = useState([]);
 
+    const [artistTopTracksFeatures, setArtistTopTracksFeatures] = useState([]);
+    const [artistAlbumsTrackFeatures, setArtistAlbumsTrackFeatures] = useState([]);
+
     const [albumsFinishFetch, setAlbumsFinishFetch] = useState(false);
+    const [albumsTracksIdsFinishFetch, setAlbumsTracksIdsFinishFetch] = useState(false);
+    const [artistTopTrackFinishFetch, setArtistTopTrackFinishFetch] = useState(false);
     const [albumsTracksFinishFetch, setAlbumsTracksFinishFetch] = useState(false);
+
+    const [artistTopTrackFeaturesFinishFetch, setArtistTopTrackFeaturesFinishFetch] = useState(false);
+    const [artistAlbumTracksFeaturesFinishFetch, setArtistAlbumTracksFeaturesFinishFetch] = useState(false);
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -86,6 +94,7 @@ function Artist ({accessToken, ChooseTrack}) {
 
                 }))
             );
+            setArtistTopTrackFinishFetch(true);
         })
 
         fetch("http://localhost:8888/getAlbums", {
@@ -137,7 +146,7 @@ function Artist ({accessToken, ChooseTrack}) {
                         })
                         
                     );
-                    setAlbumsTracksFinishFetch(true);
+                    setAlbumsTracksIdsFinishFetch(true);
                 })
             });
 
@@ -147,7 +156,7 @@ function Artist ({accessToken, ChooseTrack}) {
 
     useEffect (() => {
 
-        if(albumsTracksFinishFetch && artistAlbumsTracksIds[0])
+        if(albumsTracksIdsFinishFetch && artistAlbumsTracksIds[0])
         {
             fetch("http://localhost:8888/getTracks", {
                     method: "POST",
@@ -182,13 +191,72 @@ function Artist ({accessToken, ChooseTrack}) {
                         })
 
                     );
+                    setAlbumsTracksFinishFetch(true);
                 })
 
         }
 
 
 
-    }, [accessToken, albumsTracksFinishFetch]);
+    }, [accessToken, albumsTracksIdsFinishFetch]);
+
+    useEffect(() => {
+
+        if(!accessToken || !albumsTracksFinishFetch || !artistTopTrackFinishFetch) return;
+        
+        fetch("http://localhost:8888/getTracksAudioFeatures", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                accessToken: accessToken,
+                trackIds: artistTopTracks.map((track) => track.id)
+            })
+        })
+        .then(response => response.json())
+        .then(data =>{
+            setArtistTopTracksFeatures(
+                data.map((tracksFeatures) => {
+                    return {
+                        acousticness: tracksFeatures.acousticness,
+                        danceability: tracksFeatures.danceability,
+                        energy: tracksFeatures.energy,
+                        valence: tracksFeatures.valence
+                    }
+                })
+            );
+            setArtistTopTrackFeaturesFinishFetch(true);
+        });
+
+        fetch("http://localhost:8888/getTracksAudioFeatures", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                accessToken: accessToken,
+                trackIds: albumsTracks.map((track) => track.id)
+            })
+        })
+        .then(response => response.json())
+        .then(data =>{
+            setArtistAlbumsTrackFeatures(
+                data.map((tracksFeatures) => {
+                    return {
+                        acousticness: tracksFeatures.acousticness,
+                        danceability: tracksFeatures.danceability,
+                        energy: tracksFeatures.energy,
+                        valence: tracksFeatures.valence
+                    }
+                })
+            );
+            setArtistAlbumTracksFeaturesFinishFetch(true);
+        });
+
+
+
+    }, [accessToken, albumsTracksFinishFetch, artistTopTrackFinishFetch])
 
     return (
         <div>
@@ -214,18 +282,24 @@ function Artist ({accessToken, ChooseTrack}) {
                     </div>
                     <h3 className="mb-4">Top Tracks</h3>
                     <div className="row row-cols-1 row-cols-md-5">
-                        {artistTopTracks.map((track, index) => (
-                           <TrackCard accessToken={accessToken} Track={track} ChooseTrack={ChooseTrack}></TrackCard>
-                        ))}
+                        {
+                            (artistTopTrackFinishFetch && artistTopTrackFeaturesFinishFetch) ?
+                            
+                            artistTopTracks.map((track, index) => (
+                            <TrackCard accessToken={accessToken} Track={track} TrackFeatures={artistTopTracksFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
+                            )) : 
+                            <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
+                                <span className="mt-4 mb-5" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700', color: "#1ed760"}}>Loading...</span>
+                            </div>
+                        }
                     </div>
                     <h3 className="mb-4">Albums Tracks</h3>
                     <div className="row row-cols-1 row-cols-md-5">
                         {
-                            (albumsTracks[0]) ? 
+                            (albumsTracks[0] && artistAlbumTracksFeaturesFinishFetch) ? 
                             albumsTracks.map((track, index) => (
-                            <TrackCard accessToken={accessToken} Track={track} ChooseTrack={ChooseTrack}></TrackCard>
+                            <TrackCard accessToken={accessToken} Track={track} TrackFeatures={artistAlbumsTrackFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
                             )) :
-
                             <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
                                 <span className="mt-4 mb-5" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700', color: "#1ed760"}}>Loading...</span>
                             </div>

@@ -5,11 +5,14 @@ function PlaylistTrack({accessToken, playlistId, ChooseTrack}) {
 
     const [isLoading, setIsLoading] = useState(true);
     const [playlistTracks, setPlaylistTracks] = useState([]);
+    const [playlistTracksFeatures, setPlaylistTracksFeatures] = useState([]);
+
+    const [playlistTracksFinishFetch, setPlaylistTracksFinishFetch] = useState(false);
+    const [playlistTracksFeaturesFinishFetch, setPlaylistTracksFeaturesFinishFetch] = useState(false);
 
     useEffect (() => {
 
-        if(!accessToken) return;
-        console.log(playlistId);
+        if(!accessToken || !playlistId) return;
 
         setIsLoading(true);
 
@@ -52,12 +55,45 @@ function PlaylistTrack({accessToken, playlistId, ChooseTrack}) {
                 setPlaylistTracks ([]) 
             }
             setIsLoading(false);
+            setPlaylistTracksFinishFetch(true);
         })
         .catch(error => {
             console.log(error);
         })
 
     },[accessToken, playlistId])
+
+    useEffect(() => {
+
+        if(!accessToken || ! playlistTracksFinishFetch) return;
+
+        fetch("http://localhost:8888/getTracksAudioFeatures", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                accessToken: accessToken,
+                trackIds: playlistTracks.map((track) => track.id)
+            })
+        })
+        .then(response => response.json())
+        .then(data =>{
+            setPlaylistTracksFeatures(
+                data.map((tracksFeatures) => {
+                    return {
+                        acousticness: tracksFeatures.acousticness,
+                        danceability: tracksFeatures.danceability,
+                        energy: tracksFeatures.energy,
+                        valence: tracksFeatures.valence
+                    }
+                })
+            );
+            setPlaylistTracksFeaturesFinishFetch(true);
+        });
+
+
+    },[accessToken, playlistTracksFinishFetch])
 
     return (
         <div className="row row-cols-1 row-cols-md-5 g-4">  
@@ -66,9 +102,9 @@ function PlaylistTrack({accessToken, playlistId, ChooseTrack}) {
                 <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
                     <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>Loading...</span>
                 </div> :
-                (playlistTracks[0]) ?
-                playlistTracks.map((track) => {
-                    return <TrackCard accessToken={accessToken} Track={track} ChooseTrack={ChooseTrack}></TrackCard>
+                (playlistTracks[0] && playlistTracksFeaturesFinishFetch) ?
+                playlistTracks.map((track, index) => {
+                    return <TrackCard accessToken={accessToken} Track={track} TrackFeatures={playlistTracksFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
                 }) :
                 <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
                     <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>No Track Found !</span>

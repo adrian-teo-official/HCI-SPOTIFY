@@ -4,7 +4,7 @@ import PlaylistTrack from "./PlaylistTrack";
 import { IoPlaySharp } from 'react-icons/io5';
 
 
-const PlaylistPage = ({accessToken, ChooseTrack}) => {
+const Playlist = ({accessToken, ChooseTrack}) => {
 
     const [userPlaylist, setUserPlaylist] = useState([]);
     const [activePlaylist, setActivePlaylist] = useState(0);
@@ -21,13 +21,12 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
             headers: {
             "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-            accessToken: accessToken,
+                body: JSON.stringify({
+                accessToken: accessToken,
             }),
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             setUserPlaylist(
                 data.map((playlist, index) => {
 
@@ -65,7 +64,6 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
 
     useEffect(() => {
         if(!currentPlaylist) return;
-        console.log(userPlaylist.trackAmount);
 
         if(currentPlaylist.trackAmount > 0) {
             setDisableButton(false);
@@ -136,4 +134,4 @@ const PlaylistPage = ({accessToken, ChooseTrack}) => {
     );
 };
 
-export default PlaylistPage;
+export default Playlist;

@@ -14,10 +14,11 @@ import Artist from "./components/Artist";
 import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 
 const code = new URLSearchParams(window.location.search).get('code');
-//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
 
 
 function App() {
+
+
 
   let accessToken = null;
 
@@ -38,15 +39,13 @@ function App() {
   }
 
   const [playingTrack, setPlayingTrack] = useState();
-  const [activeLink, setActiveLink] = useState('Home');
+  const [activeLink, setActiveLink] = useState('');
 
 
   const chooseTrack = (track) =>{
     setPlayingTrack(track);
-    console.log(playingTrack);
   }
 
-  
 
   return (
     (sessionStorage.getItem('code')) ? 
@@ -69,19 +68,16 @@ function App() {
               <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav d-flex align-items-center">
                   <li className="nav-item active">
-                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Home' ? 'active-link' : 'text-white'}`} to="/" onClick={() => setActiveLink('Home')}> Home </Link>
+                    <Link className={`nav-link fs-4 text-wrap ${(activeLink === 'Home') ? 'active-link' : 'text-white'}`} to="/" onClick={() => {setActiveLink('Home'); }}> Home </Link>
                   </li>
                   <li className="nav-item active">
-                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Playlist' ? 'active-link' : 'text-white'}`} to="/Playlist" onClick={() => setActiveLink('Playlist')}> Playlist </Link>
+                    <Link className={`nav-link fs-4 text-wrap ${(activeLink === 'Playlist')? 'active-link' : 'text-white'}`} to="/Playlist" onClick={() => {setActiveLink('Playlist'); }}> Playlist </Link>
                   </li>
                   <li className="nav-item active">
-                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Explore' ? 'active-link' : 'text-white'}`} to="/Explore" onClick={() => setActiveLink('Explore')}> Explore </Link>
+                    <Link className={`nav-link fs-4 text-wrap ${(activeLink === 'Explore' ) ? 'active-link' : 'text-white'}`} to="/Explore" onClick={() => {setActiveLink('Explore'); }}> Explore </Link>
                   </li>
                   <li className="nav-item active">
-                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'Listening-Habit' ? 'active-link' : 'text-white'}`} to="/Listening-Habit" onClick={() => setActiveLink('Listening-Habit')}> Listening Habit </Link>
-                  </li>
-                  <li className="nav-item active">
-                    <Link className={`nav-link fs-4 text-wrap ${activeLink === 'About' ? 'active-link' : 'text-white'}`} to="/About" onClick={() => setActiveLink('About')}> About </Link>
+                    <Link className={`nav-link fs-4 text-wrap ${(activeLink === 'Listening-Habit') ? 'active-link' : 'text-white'}`} to="/Listening-Habit" onClick={() => {setActiveLink('Listening-Habit'); }}> Listening Habit </Link>
                   </li>
     
                 </ul>

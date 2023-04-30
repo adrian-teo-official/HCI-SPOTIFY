@@ -18,6 +18,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
 
     const [topTracksAudioFeatures, setTopTracksAudioFeatures] = useState([]);
     const [recentlyPlayAudioFeatures, setRecentlyPlayAudioFeatures] = useState([]);
+    const [recommendationsTracksAudioFeatures, setRecommendationsTracksAudioFeatures] = useState([]);
 
     const [currentAvgTopTracksFeatures, setCurrentAvgTopTracksFeatures] = useState({});
     const [currentAvgRecentlyPlayedFeatures, setCurrentAvgRecentlyPlayedFeatures] = useState({});
@@ -30,6 +31,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
     const [topArtistsFinishFetch, setTopArtistsFinishFetch] = useState(false);
     const [mappingRecentlyArtists, setMappingRecentlyArtists] = useState(false);
     const [recomandationFinishFetch, setRecomandationFinishFetch] = useState(false);
+    const [recomandationsFeaturesFinishFetch, setRecomandationsFeaturesFinishFetch] = useState(false);
 
     const [artistsShowMore, setArtistsShowMore] = useState(false);
     const [trackShowMore, setTrackShowMore] = useState(false);
@@ -144,7 +146,6 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
         if(topArtistsFinishFetch)
         {
             topArtists.forEach(artists => {
-                console.log(artists);
                 artists.genres.forEach(genre => {
                     if(genres[genre]){
                         genres[genre] += 1;
@@ -529,7 +530,6 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data.tracks);
                 setRecommendationsTracks(
                     data.tracks.map((track) =>{
 
@@ -551,7 +551,6 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                 );
                 
                 setRecomandationFinishFetch(true);
-                console.log(recommendationsTracks);
             })
             
         }
@@ -563,6 +562,35 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
         mappingRecentlyArtists,topTracksFeaturesFinishFetch,
         recentlyPlayFeaturesFinishFetch,
         currentAvgCombinationTrackFeatures, mappingGenres])
+
+    useEffect (() => {
+        if(!recomandationFinishFetch) return;
+        fetch("http://localhost:8888/getTracksAudioFeatures", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    accessToken: accessToken,
+                    trackIds: recommendationsTracks.map((track) => track.id)
+                })
+            })
+            .then(response => response.json())
+            .then(data =>{
+                setRecommendationsTracksAudioFeatures(
+                    data.map((tracksFeatures) => {
+                        return {
+                            acousticness: tracksFeatures.acousticness,
+                            danceability: tracksFeatures.danceability,
+                            energy: tracksFeatures.energy,
+                            valence: tracksFeatures.valence
+                        }
+                    })
+                );
+                setRecomandationsFeaturesFinishFetch(true);
+            });
+
+    }, [accessToken, recomandationFinishFetch])
     
 
     const ArtistsShowMore = (e) =>{
@@ -874,8 +902,8 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             <div className="row mt-2">
                 <h3 className="text-white mb-3">Recomandation</h3>
                 {
-                    (recomandationFinishFetch) ?
-                        recommendationsTracks.map((track) => <TrackCard accessToken={accessToken} Track={track} ChooseTrack={ChooseTrack}></TrackCard> )  
+                    (recomandationFinishFetch && recomandationsFeaturesFinishFetch) ?
+                        recommendationsTracks.map((track, index) => <TrackCard accessToken={accessToken} Track={track} TrackFeatures={recommendationsTracksAudioFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard> )  
                         : <div className="loading-container d-flex justify-content-center align-items-start">
                             <h3 className="loading-text">Loading</h3>
                         </div>
