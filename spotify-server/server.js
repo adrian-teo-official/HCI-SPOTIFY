@@ -74,7 +74,6 @@ app.post("/search", (req, res) => {
   spotifyApi
     .searchTracks(searchContent)
     .then((data) => {
-      console.log(data);
       res.json(data.body.tracks.items);
     })
     .catch((err) => {
@@ -183,30 +182,30 @@ app.post("/getTracksAudioFeatures", (req, res) => {
     });
 });
 
-app.post("/getTrackAudioFeatures", (req, res) => {
-  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
-  const tracksId = req.body.trackId;
+// app.post("/getTrackAudioFeatures", (req, res) => {
+//   const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+//   const tracksId = req.body.trackId;
 
-  const credentials = {
-    clientId: "ee859872f4354d5093bba8275dd2ace1",
-    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
-    redirectUri: "http://localhost:3000",
-  };
+//   const credentials = {
+//     clientId: "ee859872f4354d5093bba8275dd2ace1",
+//     clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+//     redirectUri: "http://localhost:3000",
+//   };
 
-  const spotifyApi = new spotifyWebApi(credentials);
+//   const spotifyApi = new spotifyWebApi(credentials);
 
-  spotifyApi.setAccessToken(accessToken);
+//   spotifyApi.setAccessToken(accessToken);
 
-  spotifyApi
-    .getAudioFeaturesForTrack(tracksId)
-    .then((data) => {
-      res.json(data.body);
-    })
-    .catch((err) => {
-      // console.log(err); 
-      return res.sendStatus(400);
-    });
-});
+//   spotifyApi
+//     .getAudioFeaturesForTrack(tracksId)
+//     .then((data) => {
+//       res.json(data.body);
+//     })
+//     .catch((err) => {
+//       // console.log(err.message); 
+//       return res.sendStatus(400);
+//     });
+// });
 
 app.post("/getRecentlyArtists", (req, res) => {
   const accessToken = req.body.accessToken; // link to the web address "accesstoken"
@@ -433,7 +432,6 @@ app.post("/getAlbumTrack", (req, res) => {
 app.post("/getTracks", (req, res) => {
   const accessToken = req.body.accessToken; // link to the web address "accesstoken"
   const trackIds = req.body.trackIds;
-  console.log(trackIds);
   const credentials = {
     clientId: "ee859872f4354d5093bba8275dd2ace1",
     clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
