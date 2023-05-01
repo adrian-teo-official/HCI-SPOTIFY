@@ -88,38 +88,37 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
         setArtistFinishFetch(true);
       })
 
-    fetch("http://localhost:8888/getMyRecentlyPlay", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        accessToken: accessToken
-      }),
-    })
-    .then(response => response.json())
-    .then(data =>{
-      setMyRecentlyPlay(
-        data.map((played) => {
+      fetch("http://localhost:8888/getMyRecentlyPlay", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accessToken: accessToken
+        }),
+      })
+      .then(response => response.json())
+      .then(data =>{
+        setMyRecentlyPlay(
+          data.map((played) => {
 
-          const smallestAlbumImage = played.track.album.images.reduce((smallest, image) => {
-              return image.height === Math.min(played.track.album.images.map(image => image.height))? image : smallest;
-            }, played.track.album.images[0]
-          )
+            const smallestAlbumImage = played.track.album.images.reduce((smallest, image) => {
+                return image.height === Math.min(played.track.album.images.map(image => image.height))? image : smallest;
+              }, played.track.album.images[0]
+            )
 
-          return {
-            id: played.track.id,
-            name: played.track.name,
-            artist: played.track.artists[0].name,
-            album: played.track.album.name,
-            uri: played.track.uri,
-            albumImage: smallestAlbumImage.url
-          };
-        })
-      );
-
-      setRecentlyPlayFinishFetch(true);
-    })
+            return {
+              id: played.track.id,
+              name: played.track.name,
+              artist: played.track.artists[0].name,
+              album: played.track.album.name,
+              uri: played.track.uri,
+              albumImage: smallestAlbumImage.url
+            };
+          })
+        );
+        setRecentlyPlayFinishFetch(true);
+      })
     
   },[accessToken]);
 
@@ -191,7 +190,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
         {
           (recentlyPlayFinishFetch && recentlyPlayFeaturesFinishFetch)? myRecentlyPlay.slice(0,12).map((tracks, index)=>{
             return (
-              <TrackCard accessToken={accessToken} Track={tracks} TrackFeatures={recentlyPlayAudioFeatures[index]} ChooseTrack={ChooseTrack}/>
+              <TrackCard accessToken={accessToken} key={tracks.uri} Track={tracks} TrackFeatures={recentlyPlayAudioFeatures[index]} ChooseTrack={ChooseTrack}/>
             )
           }) : <h5 className="text text-info text-center">Loading....</h5>
         }
@@ -205,7 +204,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
         {
           (topTrackFinishFetch && topTrackFeaturesFinishFetch)? myTopTracks.slice(0,12).map((tracks, index)=>{
             return (
-              <TrackCard accessToken={accessToken} Track={tracks} TrackFeatures={topTracksAudioFeatures[index]} ChooseTrack={ChooseTrack}/>
+              <TrackCard accessToken={accessToken} key={tracks.uri} Track={tracks} TrackFeatures={topTracksAudioFeatures[index]} ChooseTrack={ChooseTrack}/>
             )
           }) : <h5 className="text text-info text-center">Loading....</h5>
         }
@@ -219,7 +218,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
         {
           (artistFinishFetch)? myTopArtists.slice(0,12).map((artist, index)=>{
             return (
-              <ArtistCard Artist={artist} Key={index}></ArtistCard>
+              <ArtistCard Artist={artist} key={index}></ArtistCard>
             )
           }) : <h5 className="text text-info text-center">Loading....</h5>
         }

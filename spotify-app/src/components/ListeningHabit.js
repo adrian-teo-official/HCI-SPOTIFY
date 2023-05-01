@@ -161,7 +161,6 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
         setTopGenres(genres);
         setMappingGenres(true);
 
-
     },[topArtistsFinishFetch])
 
     // Get Track Audio Features for top track, recently play track, mapping recently play artists
@@ -495,7 +494,6 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
 
     // Generating the song of decade
     const generateSongsByDecade = (decade, tracks) => {
-        // Replace this with the actual logic to filter the songs based on the decade
         const songs = tracks.filter((song) => {
             const releaseYear = new Date(song.releaseDate).getFullYear();
 
@@ -712,7 +710,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                 </div>
                 <div className="col-md-6 mt-4">
                     {Object.keys(releaseYearCountsDecade).map((decadeStart) => {
-                        const songs = generateSongsByDecade(decadeStart, topTrackIds);
+                        const tracks = generateSongsByDecade(decadeStart, topTrackIds);
                         return (
                             <div className="mt-4" key={decadeStart}>
                                 <button
@@ -746,8 +744,9 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                                 </button>
                                 <div className="collapse" id={decadeStart}>
                                     <div>
-                                        {songs.map((song) => (
+                                        {tracks.map((track, index) => (
                                             <div className="d-flex align-items-center mb-2" 
+                                            key={index}
                                             style={{
                                                 backgroundColor: "#f8f9fa",
                                                 borderRadius: "5px",
@@ -758,10 +757,10 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#f8f9fa"}
                                             >
                                             <div className="me-2">
-                                                <img src={song.albumImage} alt={song.name} width="40" height="40" />
+                                                <img src={track.albumImage} alt={track.name} width="40" height="40" />
                                             </div>
-                                            <div className="flex-grow-1" style={{ color: "#343a40" }}>{song.name}</div>
-                                            <div style={{ color: "#343a40" }}>{new Date(song.releaseDate).getFullYear()}</div>
+                                            <div className="flex-grow-1" style={{ color: "#343a40" }}>{track.name}</div>
+                                            <div style={{ color: "#343a40" }}>{new Date(track.releaseDate).getFullYear()}</div>
                                             </div>
                                         ))}
                                     </div>
@@ -903,7 +902,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                 <h3 className="text-white mb-3">Recomandation</h3>
                 {
                     (recomandationFinishFetch && recomandationsFeaturesFinishFetch) ?
-                        recommendationsTracks.map((track, index) => <TrackCard accessToken={accessToken} Track={track} TrackFeatures={recommendationsTracksAudioFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard> )  
+                        recommendationsTracks.map((track, index) => <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={recommendationsTracksAudioFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard> )  
                         : <div className="loading-container d-flex justify-content-center align-items-start">
                             <h3 className="loading-text">Loading</h3>
                         </div>

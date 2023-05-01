@@ -18,8 +18,6 @@ const code = new URLSearchParams(window.location.search).get('code');
 
 function App() {
 
-
-
   let accessToken = null;
 
   const Logout = ()=>{
@@ -45,6 +43,28 @@ function App() {
   const chooseTrack = (track) =>{
     setPlayingTrack(track);
   }
+
+  const [userDetails, setUserDetails] = useState({});
+
+  useEffect(() => {
+
+    fetch("http://localhost:8888/userProfile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        accessToken: accessToken
+      }),
+    })
+    .then(response => response.json())
+    .then(data =>{
+      setUserDetails({
+        name: data.display_name
+      })
+    })
+
+  }, [accessToken])
 
 
   return (
@@ -82,8 +102,9 @@ function App() {
     
                 </ul>
                 <div className="nav-item active ms-auto d-flex align-items-center">
-                    <button className="btn" onClick={Logout} style={{ fontSize: "30px", color: "white", marginBottom: "7px", border: "none", outline: "none", boxShadow: "none" }}> 
-                    <FiLogOut />
+                    <span style={{fontSize: '18px', fontStyle: 'italic', fontFamily: 'sans-serif'}}>{`Welcome, ${userDetails.name}`}</span>
+                    <button className="btn" onClick={Logout} style={{ fontSize: "35px", color: "white", marginBottom: "7px", border: "none", outline: "none", boxShadow: "none" }}> 
+                      <FiLogOut />
                     </button>
                 </div>
               </div>

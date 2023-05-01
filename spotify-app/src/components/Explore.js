@@ -131,7 +131,7 @@ const Explore = ({accessToken, ChooseTrack}) => {
             (searchResults[0] && resultsTrackFeaturesFinishFetch) ?
             searchResults.map((track,index) => {
               return (
-                <TrackCard accessToken={accessToken} Track={track} key={track.uri} TrackFeatures={resultsTrackFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
+                <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={resultsTrackFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
               )
             }) : null
           }

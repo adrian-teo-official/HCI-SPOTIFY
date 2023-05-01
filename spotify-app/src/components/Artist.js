@@ -286,7 +286,7 @@ function Artist ({accessToken, ChooseTrack}) {
                             (artistTopTrackFinishFetch && artistTopTrackFeaturesFinishFetch) ?
                             
                             artistTopTracks.map((track, index) => (
-                            <TrackCard accessToken={accessToken} Track={track} TrackFeatures={artistTopTracksFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
+                            <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={artistTopTracksFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
                             )) : 
                             <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
                                 <span className="mt-4 mb-5" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700', color: "#1ed760"}}>Loading...</span>
@@ -298,7 +298,7 @@ function Artist ({accessToken, ChooseTrack}) {
                         {
                             (albumsTracks[0] && artistAlbumTracksFeaturesFinishFetch) ? 
                             albumsTracks.map((track, index) => (
-                            <TrackCard accessToken={accessToken} Track={track} TrackFeatures={artistAlbumsTrackFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
+                            <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={artistAlbumsTrackFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
                             )) :
                             <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
                                 <span className="mt-4 mb-5" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700', color: "#1ed760"}}>Loading...</span>

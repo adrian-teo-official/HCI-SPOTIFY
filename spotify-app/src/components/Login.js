@@ -39,6 +39,7 @@ function Login()
     return (
         <div className="container">
             <h1 className='text-center text-white'>Welcome to HCI-Spotify</h1>
+            <p className='text-center text-white' style={{fontSize: '20px'}}>supported by <span style={{color: '#1ed760', fontWeight: 'bold', fontStyle: 'italic'}}>Spotify Api</span></p>
             <a className='btn btn-success btn-lg' style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}} href={AUTH_URL}>
                 Login with Spotify
             </a>

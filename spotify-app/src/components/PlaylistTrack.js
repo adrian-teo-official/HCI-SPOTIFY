@@ -104,7 +104,7 @@ function PlaylistTrack({accessToken, playlistId, ChooseTrack}) {
                 </div> :
                 (playlistTracks[0] && playlistTracksFeaturesFinishFetch) ?
                 playlistTracks.map((track, index) => {
-                    return <TrackCard accessToken={accessToken} Track={track} TrackFeatures={playlistTracksFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
+                    return <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={playlistTracksFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
                 }) :
                 <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
                     <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>No Track Found !</span>

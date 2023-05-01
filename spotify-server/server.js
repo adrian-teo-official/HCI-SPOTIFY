@@ -57,6 +57,29 @@ app.post("/login", (req, res) => {
     });
 });
 
+app.post("/userProfile", (req, res) => {
+  const accessToken = req.body.accessToken; // link to the web address "accesstoken"
+
+  const credentials = {
+    clientId: "ee859872f4354d5093bba8275dd2ace1",
+    clientSecret: "a38b3dae7f6b47669a9f4d3e0bb9ba2b",
+    redirectUri: "http://localhost:3000",
+  };
+
+  const spotifyApi = new spotifyWebApi(credentials);
+
+  spotifyApi.setAccessToken(accessToken);
+
+  spotifyApi
+    .getMe()
+    .then((data) => {
+      res.json(data.body);
+    })
+    .catch((err) => {
+      return res.sendStatus(500);
+    });
+});
+
 app.post("/search", (req, res) => {
   const accessToken = req.body.accessToken; // link to the web address "accesstoken"
   const searchContent = req.body.searchContent; // link to the web address "searchContent"
@@ -256,25 +279,25 @@ app.post('/getRecommendations', (req, res) => {
   spotifyApi.setAccessToken(accessToken);
 
   spotifyApi
-  .getRecommendations({
-    target_energy: target_energy,
-    target_acousticness: target_acousticness,
-    target_danceability: target_danceability,
-    target_valence: target_valence,
-    seed_artists: seed_artists,
-    seed_genres: seed_genres,
-    seed_tracks: seed_tracks,
-    limit: 24
-  })
-  .then(
-    function (data) {
-      res.json(data.body);
-    },
-    function (err) {
-      //console.error(err.message);
-      return res.status(500).json({ error: "Failed to get recommendations" });
-    }
-  );
+    .getRecommendations({
+      target_energy: target_energy,
+      target_acousticness: target_acousticness,
+      target_danceability: target_danceability,
+      target_valence: target_valence,
+      seed_artists: seed_artists,
+      seed_genres: seed_genres,
+      seed_tracks: seed_tracks,
+      limit: 24
+    })
+    .then(
+      function (data) {
+        res.json(data.body);
+      },
+      function (err) {
+        //console.error(err.message);
+        return res.status(500).json({ error: "Failed to get recommendations" });
+      }
+    );
 
 });
 
