@@ -11,6 +11,8 @@ const Playlist = ({accessToken, ChooseTrack}) => {
 
     const [disableButton, setDisableButton] = useState(true);
 
+    const [playlistFinishFetch, setPlaylistFinishFetch] = useState(false);
+
 
     useEffect(() => {
 
@@ -51,6 +53,8 @@ const Playlist = ({accessToken, ChooseTrack}) => {
                 })
 
             );
+
+            setPlaylistFinishFetch(true);
 
         })
     }, [accessToken])
@@ -107,7 +111,7 @@ const Playlist = ({accessToken, ChooseTrack}) => {
                 </div>
                 <div className="col-md-10 playlist-details">
                     {
-                        (currentPlaylist) ? (
+                        (playlistFinishFetch && userPlaylist.length > 0 && currentPlaylist) ? (
                             <div>
                                 <div className="playlist-details-header">
                                     <div className="header-background top-background"></div>
@@ -126,7 +130,7 @@ const Playlist = ({accessToken, ChooseTrack}) => {
                                     <PlaylistTrack accessToken={accessToken} playlistId={currentPlaylist.id} ChooseTrack={ChooseTrack} ></PlaylistTrack>
                                 </div>
                             </div>
-                        ) : (<div></div>)
+                        ) : ((playlistFinishFetch) ? <div className='mt-5 mb-5'> <h2 className="text text-warning text-center">No Playlist Found !</h2> </div> : <div className='mt-5 mb-5'><h2 className="text text-warning text-center">Loading...</h2></div>)
                     }
                 </div>
             </div>

@@ -687,14 +687,12 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                             <div className="row" style={{fontSize: "13px"}} >
                                 <div className="col-md-12">
                                     <div className="rectangle rectangle-4">
-                                       <span style={{color: "orange", fontWeight: "bold"}}>The Taste are calculated based on your recently play and the combination of your top played track in Spotify.</span>
+                                    <span style={{color: "orange", fontWeight: "bold"}}>The Taste are calculated based on your recently play and the combination of your top played track in Spotify.</span>
                                     </div>
                                 </div>
                             </div>
-                    </div>
-                    
+                    </div> 
                 </div>
-
             </div>
             <div className="row border border-3 border-top-0 border-start-0 border-end-0"></div>
             <div className="row">
@@ -709,71 +707,79 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                     } 
                 </div>
                 <div className="col-md-6 mt-4">
-                    {Object.keys(releaseYearCountsDecade).map((decadeStart) => {
-                        const tracks = generateSongsByDecade(decadeStart, topTrackIds);
-                        return (
-                            <div className="mt-4" key={decadeStart}>
-                                <button
-                                className="btn btn-link mb-2"
-                                data-bs-toggle="collapse"
-                                type="button"
-                                data-bs-target={`#${decadeStart}`}
-                                aria-expanded={decadeStart === expandedDecade}
-                                aria-controls={decadeStart}
-                                onClick={() => setExpandedDecade(decadeStart === expandedDecade ? null : decadeStart)}
-                                style={{
-                                    textDecoration: "none",
-                                    fontSize: "1.5rem",
-                                    padding: "10px",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    backgroundColor: decadeStart === expandedDecade ? "#1db954" : "#282828",
-                                    color: decadeStart === expandedDecade ? "#ffffff" : "#ffffff",
-                                    borderRadius: "4px",
-                                    width: "100%",
-                                    transition: "0.3s",
-                                }}
-                                >
-                                    {decadeStart}s
-                                    {decadeStart === expandedDecade ? (
-                                        <FaChevronUp style={{ fontSize: "1.2rem" }} />
-                                    ) : (
-                                        <FaChevronDown style={{ fontSize: "1.2rem" }} />
-                                    )}
-                                </button>
-                                <div className="collapse" id={decadeStart}>
-                                    <div>
-                                        {tracks.map((track, index) => (
-                                            <div className="d-flex align-items-center mb-2" 
-                                            key={index}
-                                            style={{
-                                                backgroundColor: "#f8f9fa",
-                                                borderRadius: "5px",
-                                                padding: "8px",
-                                                transition: "0.3s",
-                                            }}
-                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#e9ecef"}
-                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#f8f9fa"}
-                                            >
-                                            <div className="me-2">
-                                                <img src={track.albumImage} alt={track.name} width="40" height="40" />
-                                            </div>
-                                            <div className="flex-grow-1" style={{ color: "#343a40" }}>{track.name}</div>
-                                            <div style={{ color: "#343a40" }}>{new Date(track.releaseDate).getFullYear()}</div>
-                                            </div>
-                                        ))}
+                    {   (releaseYearCountsDecade.length > 0) ?
+                        Object.keys(releaseYearCountsDecade).map((decadeStart) => {
+                            const tracks = generateSongsByDecade(decadeStart, topTrackIds);
+                            return (
+                                <div className="mt-4" key={decadeStart}>
+                                    <button
+                                    className="btn btn-link mb-2"
+                                    data-bs-toggle="collapse"
+                                    type="button"
+                                    data-bs-target={`#${decadeStart}`}
+                                    aria-expanded={decadeStart === expandedDecade}
+                                    aria-controls={decadeStart}
+                                    onClick={() => setExpandedDecade(decadeStart === expandedDecade ? null : decadeStart)}
+                                    style={{
+                                        textDecoration: "none",
+                                        fontSize: "1.5rem",
+                                        padding: "10px",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        backgroundColor: decadeStart === expandedDecade ? "#1db954" : "#282828",
+                                        color: decadeStart === expandedDecade ? "#ffffff" : "#ffffff",
+                                        borderRadius: "4px",
+                                        width: "100%",
+                                        transition: "0.3s",
+                                    }}
+                                    >
+                                        {decadeStart}s
+                                        {decadeStart === expandedDecade ? (
+                                            <FaChevronUp style={{ fontSize: "1.2rem" }} />
+                                        ) : (
+                                            <FaChevronDown style={{ fontSize: "1.2rem" }} />
+                                        )}
+                                    </button>
+                                    <div className="collapse" id={decadeStart}>
+                                        <div>
+                                            {tracks.map((track, index) => (
+                                                <div className="d-flex align-items-center mb-2" 
+                                                key={index}
+                                                style={{
+                                                    backgroundColor: "#f8f9fa",
+                                                    borderRadius: "5px",
+                                                    padding: "8px",
+                                                    transition: "0.3s",
+                                                }}
+                                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#e9ecef"}
+                                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#f8f9fa"}
+                                                >
+                                                <div className="me-2">
+                                                    <img src={track.albumImage} alt={track.name} width="40" height="40" />
+                                                </div>
+                                                <div className="flex-grow-1" style={{ color: "#343a40" }}>{track.name}</div>
+                                                <div style={{ color: "#343a40" }}>{new Date(track.releaseDate).getFullYear()}</div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             );
-                        })}
+                        })
+                        :
+                        <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
+                            <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>Nothing Found For The Moment!</span>
+                        </div>
+                    }
                 </div>
             </div>
             <div className="row border border-3 border-top-0 border-start-0 border-end-0 mt-2"></div>
             <div className="row text-white mt-2">
                 <h3 className="text-white mb-2" style={{fontWeight: "bold" }}>Top Genres</h3>
-                {Object.entries(topGenres).map(([genre, count], index) => (
+                {
+                    (Object.entries(topGenres).length > 0) ?
+                    Object.entries(topGenres).map(([genre, count], index) => (
                         <div
                         key={genre}
                         className="col-12 col-md-2 col-lg-2 d-flex my-1"
@@ -801,7 +807,12 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                                 {count}
                             </div>
                         </div>
-                ))}
+                    ))
+                    :
+                    <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
+                        <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>Nothing Found For The Moment!</span>
+                    </div>
+                }
             </div>
             <div className="row border border-3 border-top-0 border-start-0 border-end-0 mt-2"></div>
             <div className="row">
@@ -809,6 +820,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                     <h3 className="text-white mb-3">Top Tracks</h3>
                     <div className="track-artist-list" style = {{maxHeight: 64 * ((trackShowMore) ? topTrackIds.length : 5) + "px"}}>
                     {
+                        (topTrackIds.length > 0) ?
                         topTrackIds.map((track) => (
                             <div
                             key={track.id}
@@ -822,6 +834,10 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                                 <div className="flex-grow-1 text-white">{track.name}</div>
                             </div>
                         )) 
+                        :
+                        <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
+                            <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>Nothing Found For The Moment!</span>
+                        </div>
                     }
                     </div>
                     <button
@@ -854,7 +870,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                     <h3 className="text-white mb-3">Top Artists</h3>
                     <div className="track-artist-list" style = {{maxHeight: 64 * ((artistsShowMore) ? topArtists.length : 5) + "px"}}> 
                     {
-                        
+                        (topArtists.length > 0) ?
                         topArtists.map((artist) => (
                             <div
                             key={artist.id}
@@ -868,6 +884,10 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                                 <div className="flex-grow-1 text-white">{artist.name}</div>
                             </div>
                         ))
+                        :
+                        <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
+                            <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>Nothing Found For The Moment!</span>
+                        </div>
                     }
                     </div>
                     <button
@@ -906,10 +926,10 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                         : <div className="loading-container d-flex justify-content-center align-items-start">
                             <h3 className="loading-text">Loading</h3>
                         </div>
-
                 }
             </div>
             <div className="row" style={{ marginBottom: '7rem' }}/>
+            
         </div>
         
     );

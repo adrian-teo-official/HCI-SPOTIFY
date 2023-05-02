@@ -25,7 +25,7 @@ function useAuthAgent(code) {
   }, [expiresIn]);
 
   useEffect(() => {
-    if(accessToken) return;
+    if(accessToken || sessionStorage.getItem('access_token')) return;
     async function fetchLoginData() {
       try {
         const response = await fetch('http://localhost:8888/login', {
@@ -74,7 +74,7 @@ function useAuthAgent(code) {
 
     const interval = setInterval(() => {
       fetchRefreshToken();
-    }, (expiresIn - 120) * 1000);
+    }, (expiresIn - 60) * 1000);
 
     return () => clearInterval(interval); // clearInterval makes sure the interval is cleared when the component unmounts;
   }, [refreshToken, expiresIn]);

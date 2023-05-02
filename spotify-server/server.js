@@ -76,6 +76,7 @@ app.post("/userProfile", (req, res) => {
       res.json(data.body);
     })
     .catch((err) => {
+      console.log(err.message);
       return res.sendStatus(500);
     });
 });

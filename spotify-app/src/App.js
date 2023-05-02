@@ -48,6 +48,8 @@ function App() {
 
   useEffect(() => {
 
+    if(!accessToken) return;
+
     fetch("http://localhost:8888/userProfile", {
       method: "POST",
       headers: {

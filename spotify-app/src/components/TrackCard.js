@@ -3,32 +3,6 @@ import "./Card.css";
 
 function TrackCard({ accessToken, Track, TrackFeatures, ChooseTrack}) {
 
-    // const [trackFeatures, setTrackFeatures] = useState([]);
-
-    // useEffect (()=>{
-    //     if(accessToken && Track) {
-    //         fetch("http://localhost:8888/getTrackAudioFeatures", {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify({
-    //                     accessToken: accessToken,
-    //                     trackId: Track.id
-    //                 }),
-    //             })
-    //             .then(response => response.json())
-    //             .then(data =>{
-    //                 setTrackFeatures({
-    //                     acousticness: data.acousticness,
-    //                     danceability: data.danceability,
-    //                     energy: data.energy,
-    //                     valence: data.valence
-    //                 })
-    //             });
-    //         }
-    // },[accessToken])
-
     const playHandler = () => {
         ChooseTrack(Track);
     };

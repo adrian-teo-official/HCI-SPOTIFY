@@ -296,7 +296,7 @@ function Artist ({accessToken, ChooseTrack}) {
                     <h3 className="mb-4">Albums Tracks</h3>
                     <div className="row row-cols-1 row-cols-md-5">
                         {
-                            (albumsTracks[0] && artistAlbumTracksFeaturesFinishFetch) ? 
+                            (albumsTracks.length > 0 && artistAlbumTracksFeaturesFinishFetch) ? 
                             albumsTracks.map((track, index) => (
                             <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={artistAlbumsTrackFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
                             )) :

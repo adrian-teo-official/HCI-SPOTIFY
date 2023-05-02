@@ -102,12 +102,17 @@ function PlaylistTrack({accessToken, playlistId, ChooseTrack}) {
                 <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
                     <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>Loading...</span>
                 </div> :
-                (playlistTracks[0] && playlistTracksFeaturesFinishFetch) ?
-                playlistTracks.map((track, index) => {
-                    return <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={playlistTracksFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
-                }) :
+                (playlistTracksFeaturesFinishFetch) ?
+                    (playlistTracks.length > 0) ?
+                    playlistTracks.map((track, index) => {
+                        return <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={playlistTracksFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
+                    }) :
+                    <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
+                        <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>No Track Found !</span>
+                    </div>
+                : 
                 <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
-                    <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>No Track Found !</span>
+                    <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>Almost There....</span>
                 </div>
            }
         </div>
