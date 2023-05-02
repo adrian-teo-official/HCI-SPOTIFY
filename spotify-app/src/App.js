@@ -66,7 +66,6 @@ function App() {
 
   }, [accessToken])
 
-
   return (
     (sessionStorage.getItem('code')) ? 
       <div className="App container">
