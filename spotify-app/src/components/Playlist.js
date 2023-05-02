@@ -11,6 +11,8 @@ const Playlist = ({accessToken, ChooseTrack}) => {
 
     const [disableButton, setDisableButton] = useState(true);
 
+    const [playlistFinishFetch, setPlaylistFinishFetch] = useState(false);
+
 
     useEffect(() => {
 
@@ -52,6 +54,8 @@ const Playlist = ({accessToken, ChooseTrack}) => {
 
             );
 
+            setPlaylistFinishFetch(true);
+
         })
     }, [accessToken])
 
@@ -90,7 +94,7 @@ const Playlist = ({accessToken, ChooseTrack}) => {
     return (
         <div className="container-fluid">
             <div className="row">
-                <div className="col-md-2 playlist-sidebar middle-line">
+                <div className="col-md-2 playlist-sidebar middle-line" style={{marginBottom: '6rem'}}>
                 <ul className="list-group">
                     {userPlaylist.map((playlist, index) => (
                     <li
@@ -105,9 +109,9 @@ const Playlist = ({accessToken, ChooseTrack}) => {
                     ))}
                 </ul>
                 </div>
-                <div className="col-md-10 playlist-details">
+                <div className="col-md-10 playlist-details" style={{marginBottom: '6rem'}}>
                     {
-                        (currentPlaylist) ? (
+                        (playlistFinishFetch && userPlaylist.length > 0 && currentPlaylist) ? (
                             <div>
                                 <div className="playlist-details-header">
                                     <div className="header-background top-background"></div>
@@ -126,7 +130,7 @@ const Playlist = ({accessToken, ChooseTrack}) => {
                                     <PlaylistTrack accessToken={accessToken} playlistId={currentPlaylist.id} ChooseTrack={ChooseTrack} ></PlaylistTrack>
                                 </div>
                             </div>
-                        ) : (<div></div>)
+                        ) : ((playlistFinishFetch) ? <div className='mt-5 mb-5'> <h2 className="text text-warning text-center">No Playlist Found !</h2> </div> : <div className='mt-5 mb-5'><h2 className="text text-warning text-center">Loading...</h2></div>)
                     }
                 </div>
             </div>

@@ -46,10 +46,16 @@ function Artist ({accessToken, ChooseTrack}) {
         .then(response => response.json())
         .then(data => {
 
-            const smallestArtistsImage = data.images.reduce((smallest, image) => {
+            let smallestArtistsImage = {url: 'https://via.placeholder.com/164x164/181818/ffffff?text=Artists'};
+
+            if(data.images[0])
+            {
+              smallestArtistsImage = data.images.reduce((smallest, image) => {
                 return image.height === Math.min(data.images.map(image => image.height))? image : smallest;
                 }, data.images[0]
-            )
+              )
+
+            }
 
             setCurrentArtistInfo({
 
@@ -296,7 +302,7 @@ function Artist ({accessToken, ChooseTrack}) {
                     <h3 className="mb-4">Albums Tracks</h3>
                     <div className="row row-cols-1 row-cols-md-5">
                         {
-                            (albumsTracks[0] && artistAlbumTracksFeaturesFinishFetch) ? 
+                            (albumsTracks.length > 0 && artistAlbumTracksFeaturesFinishFetch) ? 
                             albumsTracks.map((track, index) => (
                             <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={artistAlbumsTrackFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
                             )) :
