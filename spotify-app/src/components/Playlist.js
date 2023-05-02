@@ -94,7 +94,7 @@ const Playlist = ({accessToken, ChooseTrack}) => {
     return (
         <div className="container-fluid">
             <div className="row">
-                <div className="col-md-2 playlist-sidebar middle-line">
+                <div className="col-md-2 playlist-sidebar middle-line" style={{marginBottom: '6rem'}}>
                 <ul className="list-group">
                     {userPlaylist.map((playlist, index) => (
                     <li
@@ -109,7 +109,7 @@ const Playlist = ({accessToken, ChooseTrack}) => {
                     ))}
                 </ul>
                 </div>
-                <div className="col-md-10 playlist-details">
+                <div className="col-md-10 playlist-details" style={{marginBottom: '6rem'}}>
                     {
                         (playlistFinishFetch && userPlaylist.length > 0 && currentPlaylist) ? (
                             <div>

@@ -32,10 +32,16 @@ function PlaylistTrack({accessToken, playlistId, ChooseTrack}) {
                 setPlaylistTracks (
                     data.items.map(playlistTracks => {
 
-                        const smallestAlbumImage = playlistTracks.track.album.images.reduce((smallest, image) => {
-                            return image.height === Math.min(playlistTracks.track.album.images.map(image => image.height))? image : smallest;
-                            }, playlistTracks.track.album.images[0]
-                        )
+                        let smallestAlbumImage = {url: 'https://via.placeholder.com/150x150/181818/ffffff?text=Spotify'};
+
+                        if(playlistTracks.track.album.images[0])
+                        {
+                            smallestAlbumImage = playlistTracks.track.album.images.reduce((smallest, image) => {
+                                return image.height === Math.min(playlistTracks.track.album.images.map(image => image.height))? image : smallest;
+                                }, playlistTracks.track.album.images[0]
+                            );
+
+                        }
               
                         return {
                             id: playlistTracks.track.id,
@@ -43,7 +49,7 @@ function PlaylistTrack({accessToken, playlistId, ChooseTrack}) {
                             artist: playlistTracks.track.artists[0].name,
                             album: playlistTracks.track.album.name,
                             uri: playlistTracks.track.uri,
-                            albumImage: smallestAlbumImage.url
+                            albumImage: (smallestAlbumImage.url) ? smallestAlbumImage.url : null
                         };
 
                     })
@@ -104,7 +110,7 @@ function PlaylistTrack({accessToken, playlistId, ChooseTrack}) {
                 </div> :
                 (playlistTracksFeaturesFinishFetch) ?
                     (playlistTracks.length > 0) ?
-                    playlistTracks.map((track, index) => {
+                    playlistTracks.slice(0,20).map((track, index) => {
                         return <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={playlistTracksFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard>
                     }) :
                     <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>

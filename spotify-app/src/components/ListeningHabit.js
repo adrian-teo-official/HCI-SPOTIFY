@@ -180,16 +180,19 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             })
             .then(response => response.json())
             .then(data =>{
-                setTopTracksAudioFeatures(
-                    data.map((topTrackFeatures) => {
-                        return {
-                            acousticness: topTrackFeatures.acousticness,
-                            danceability: topTrackFeatures.danceability,
-                            energy: topTrackFeatures.energy,
-                            valence: topTrackFeatures.valence
-                        }
-                    })
-                );
+                if(data[0])
+                {
+                    setTopTracksAudioFeatures(
+                        data.map((topTrackFeatures) => {
+                            return {
+                                acousticness: topTrackFeatures.acousticness,
+                                danceability: topTrackFeatures.danceability,
+                                energy: topTrackFeatures.energy,
+                                valence: topTrackFeatures.valence
+                            }
+                        })
+                    );
+                }
                 setTopTracksFeaturesFinishFetch(true);
             });
     
@@ -205,16 +208,20 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             })
             .then(response => response.json())
             .then(data =>{
-                setRecentlyPlayAudioFeatures(
-                    data.map((recentlyPlayFeatures) => {
-                        return {
-                            acousticness: recentlyPlayFeatures.acousticness,
-                            danceability: recentlyPlayFeatures.danceability,
-                            energy: recentlyPlayFeatures.energy,
-                            valence: recentlyPlayFeatures.valence
-                        }
-                    })
-                );
+                if(data[0])
+                {
+                    setRecentlyPlayAudioFeatures(
+                        data.map((recentlyPlayFeatures) => {
+                            return {
+                                acousticness: recentlyPlayFeatures.acousticness,
+                                danceability: recentlyPlayFeatures.danceability,
+                                energy: recentlyPlayFeatures.energy,
+                                valence: recentlyPlayFeatures.valence
+                            }
+                        })
+                    );
+
+                }
     
                 setRecentlyPlayFeaturesFinishFetch(true);
             });
@@ -528,25 +535,30 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             })
             .then(response => response.json())
             .then(data => {
-                setRecommendationsTracks(
-                    data.tracks.map((track) =>{
 
-                        const smallestAlbumImage = track.album.images.reduce((smallest, image) => {
-                            return image.height === Math.min(track.album.images.map(image => image.height))? image : smallest;
-                            }, track.album.images[0]
-                        )
-                        
-                        return {
-                            id: track.id,
-                            artist: track.artists[0].name,
-                            album: track.album.name,
-                            name: track.name,
-                            albumImage: smallestAlbumImage.url,
-                            uri: track.uri
-                        }
+                if(data[0])
+                {
+                    setRecommendationsTracks(
+                        data.tracks.map((track) =>{
+    
+                            const smallestAlbumImage = track.album.images.reduce((smallest, image) => {
+                                return image.height === Math.min(track.album.images.map(image => image.height))? image : smallest;
+                                }, track.album.images[0]
+                            )
+                            
+                            return {
+                                id: track.id,
+                                artist: track.artists[0].name,
+                                album: track.album.name,
+                                name: track.name,
+                                albumImage: smallestAlbumImage.url,
+                                uri: track.uri
+                            }
+    
+                        })
+                    );
 
-                    })
-                );
+                }
                 
                 setRecomandationFinishFetch(true);
             })
@@ -575,16 +587,22 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             })
             .then(response => response.json())
             .then(data =>{
-                setRecommendationsTracksAudioFeatures(
-                    data.map((tracksFeatures) => {
-                        return {
-                            acousticness: tracksFeatures.acousticness,
-                            danceability: tracksFeatures.danceability,
-                            energy: tracksFeatures.energy,
-                            valence: tracksFeatures.valence
-                        }
-                    })
-                );
+
+                if(data[0])
+                {
+                    setRecommendationsTracksAudioFeatures(
+                        data.map((tracksFeatures) => {
+                            return {
+                                acousticness: tracksFeatures.acousticness,
+                                danceability: tracksFeatures.danceability,
+                                energy: tracksFeatures.energy,
+                                valence: tracksFeatures.valence
+                            }
+                        })
+                    );
+
+                }
+                
                 setRecomandationsFeaturesFinishFetch(true);
             });
 
@@ -922,10 +940,18 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
                 <h3 className="text-white mb-3">Recomandation</h3>
                 {
                     (recomandationFinishFetch && recomandationsFeaturesFinishFetch) ?
-                        recommendationsTracks.map((track, index) => <TrackCard accessToken={accessToken} key={track.uri} Track={track} TrackFeatures={recommendationsTracksAudioFeatures[index]} ChooseTrack={ChooseTrack}></TrackCard> )  
-                        : <div className="loading-container d-flex justify-content-center align-items-start">
-                            <h3 className="loading-text">Loading</h3>
-                        </div>
+                        (recommendationsTracks.length > 0) ?
+                            recommendationsTracks.map((track, index) => <TrackCard accessToken={accessToken} 
+                            key={track.uri} Track={track} TrackFeatures={recommendationsTracksAudioFeatures[index]} ChooseTrack={ChooseTrack}>
+                            </TrackCard>) 
+                            :
+                            <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
+                                <span className="text-warning mt-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>Nothing Found For The Moment!</span>
+                            </div>
+                    : 
+                    <div className="loading-container d-flex justify-content-center align-items-start">
+                        <h3 className="loading-text">Loading</h3>
+                    </div>
                 }
             </div>
             <div className="row" style={{ marginBottom: '7rem' }}/>

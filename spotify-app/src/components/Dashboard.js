@@ -137,7 +137,10 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
     })
     .then(response => response.json())
     .then(data =>{
-        setRecentlyPlayAudioFeatures(
+
+        if(data[0])
+        {
+          setRecentlyPlayAudioFeatures(
             data.map((tracksFeatures) => {
                 return {
                     acousticness: tracksFeatures.acousticness,
@@ -146,7 +149,10 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
                     valence: tracksFeatures.valence
                 }
             })
-        );
+          );
+
+        }
+      
         setRecentlyPlayFeaturesFinishFetch(true);
     });
 
@@ -162,7 +168,9 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
     })
     .then(response => response.json())
     .then(data =>{
-        setTopTrackAudioFeatures(
+        if(data[0])
+        {
+          setTopTrackAudioFeatures(
             data.map((tracksFeatures) => {
                 return {
                     acousticness: tracksFeatures.acousticness,
@@ -171,7 +179,9 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
                     valence: tracksFeatures.valence
                 }
             })
-        );
+          );
+
+        }
         setTopTrackFeaturesFinishFetch(true);
     });
 
@@ -218,7 +228,8 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
               return (
                 <TrackCard accessToken={accessToken} key={tracks.uri} Track={tracks} TrackFeatures={topTracksAudioFeatures[index]} ChooseTrack={ChooseTrack}/>
               )
-            }) :
+            }) 
+            :
             <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
                     <span className="text-warning mt-4 mb-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>No Track Found !</span>
             </div>
@@ -243,7 +254,7 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
               )
             }) :
             <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
-                    <span className="text-warning mt-4 mb-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>No Track Found !</span>
+                    <span className="text-warning mt-4 mb-4" style={{fontFamily: 'Roboto Condensed, sans-serif', fontSize: '28px', fontWeight: '700'}}>No Arists Found !</span>
             </div>
           : 
           <div className="d-flex justify-content-center align-items-center" style={{height: '100%', width: '100%'}}>
