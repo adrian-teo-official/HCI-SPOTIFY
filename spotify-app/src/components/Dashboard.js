@@ -68,12 +68,18 @@ const Dashboard = ({ accessToken, ChooseTrack}) => {
       .then(response => response.json())
       .then(data => {
         setMyTopArtists(
-          data.map((artists) => {  
+          data.map((artists) => { 
 
-            const smallestArtistsImage = artists.images.reduce((smallest, image) => {
-              return image.height === Math.min(artists.images.map(image => image.height))? image : smallest;
-              }, artists.images[0]
-            )
+            let smallestArtistsImage = {url: 'https://via.placeholder.com/164x164/181818/ffffff?text=Artists'};
+
+            if(artists.images[0])
+            {
+              smallestArtistsImage = artists.images.reduce((smallest, image) => {
+                return image.height === Math.min(artists.images.map(image => image.height))? image : smallest;
+                }, artists.images[0]
+              )
+
+            }
 
             return {
               id: artists.id,

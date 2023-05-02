@@ -46,10 +46,16 @@ function Artist ({accessToken, ChooseTrack}) {
         .then(response => response.json())
         .then(data => {
 
-            const smallestArtistsImage = data.images.reduce((smallest, image) => {
+            let smallestArtistsImage = {url: 'https://via.placeholder.com/164x164/181818/ffffff?text=Artists'};
+
+            if(data.images[0])
+            {
+              smallestArtistsImage = data.images.reduce((smallest, image) => {
                 return image.height === Math.min(data.images.map(image => image.height))? image : smallest;
                 }, data.images[0]
-            )
+              )
+
+            }
 
             setCurrentArtistInfo({
 

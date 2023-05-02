@@ -9,7 +9,7 @@ function TrackCard({ accessToken, Track, TrackFeatures, ChooseTrack}) {
 
     return (
         <div
-        className="col-sm-2 card-container"
+        className="col-sm-2 card-container d-flex"
         style={{ cursor: "pointer" }}
         onClick={playHandler}
         >
@@ -18,6 +18,7 @@ function TrackCard({ accessToken, Track, TrackFeatures, ChooseTrack}) {
                 src={`${Track.albumImage}`} 
                 className="card-img-top"
                 alt="Card image cap"
+                style={{Height: '160.4px'}}
                 />
                 <div className="card-body text-white">
                     <h6 className="card-title text-truncate" style={{fontWeight: "bold"}}>{`${Track.name}`}</h6>
