@@ -542,7 +542,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             .then(response => response.json())
             .then(data => {
 
-                if(data[0])
+                if(data.tracks[0])
                 {
                     setRecommendationsTracks(
                         data.tracks.map((track) =>{
@@ -594,7 +594,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             .then(response => response.json())
             .then(data =>{
 
-                if(data[0])
+                if(data)
                 {
                     setRecommendationsTracksAudioFeatures(
                         data.map((tracksFeatures) => {
