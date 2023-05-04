@@ -3,6 +3,8 @@ import Chart from 'chart.js/auto';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import TrackCard from "./TrackCard";
 import "./ListeningHabit.css";
+import { TfiReload } from 'react-icons/tfi';
+
 
 const ListeningHabit = ({accessToken, ChooseTrack}) =>{
 
@@ -37,6 +39,8 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
     const [trackShowMore, setTrackShowMore] = useState(false);
 
     const [expandedDecade, setExpandedDecade] = useState(null);
+
+    const [recomandationsRefresh, setRecomandationsRefresh] = useState(false);
 
     // Get Top Track, Recently Play, Top Artists
     useEffect (() => {
@@ -577,7 +581,7 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
         recentlyPlayedFinishFetch, 
         mappingRecentlyArtists,topTracksFeaturesFinishFetch,
         recentlyPlayFeaturesFinishFetch,
-        currentAvgCombinationTrackFeatures, mappingGenres])
+        currentAvgCombinationTrackFeatures, mappingGenres, recomandationsRefresh])
 
     useEffect (() => {
         if(!recomandationFinishFetch) return;
@@ -632,6 +636,12 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
         else {
             setTrackShowMore(true);
         }
+    }
+
+    const RecomandationRefresh = (e) => {
+        e.preventDefault();
+        setRecomandationsRefresh(!recomandationsRefresh);
+
     }
 
     return(
@@ -943,7 +953,24 @@ const ListeningHabit = ({accessToken, ChooseTrack}) =>{
             </div>
             <div className="row border border-3 border-top-0 border-start-0 border-end-0 mt-2"></div>
             <div className="row mt-2">
-                <h3 className="text-white mb-3">Recomandation</h3>
+                <div className="d-flex align-items-center w-100">
+                    <div className="d-flex justify-content-center w-100">
+                        <h2 className="text-white mb-3">Recommendation</h2>
+                    </div>
+                    <button
+                    className="btn ml-auto"
+                    style={{
+                        background: '#121212',
+                        // border: '0.2px solid #1db954',
+                        // borderRadius: '100%',
+                        color: '#1db954',
+                        marginTop: '-15px'
+                    }}
+                    onClick={RecomandationRefresh}
+                    >
+                        <TfiReload size={22}></TfiReload>
+                    </button>
+                </div>
                 {
                     (recomandationFinishFetch && recomandationsFeaturesFinishFetch) ?
                         (recommendationsTracks.length > 0) ?
